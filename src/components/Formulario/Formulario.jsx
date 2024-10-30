@@ -91,8 +91,8 @@ const App = () => {
       <Form.Item name="estado_civil" className='white-label' label="Estado civil:">
           <Select>
           {
-            data.options.map(option => {
-              return  <Option value={option.value}>{option.label}</Option>
+            data.options.map((option, index) => {
+              return  <Option key={index} value={option.value}>{option.label}</Option>
             })
 
           }
@@ -114,8 +114,8 @@ const App = () => {
       <Form.Item name="ciudad" className='white-label' label="¿Desde qué ciudad nos visitas?🚗✈️🚲🛵🚌" >
         <Select>
           {
-            data.locations.map(option => {
-              return  <Option value={option.value}>{option.label}</Option>
+            data.locations.map((option, index) => {
+              return  <Option key={index} value={option.value}>{option.label}</Option>
             })
 
           }
