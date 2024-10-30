@@ -31,7 +31,7 @@ function App() {
 
 
         
-        <img className="h-[640'x] w-[550px] mb-10" src="/public/img/bg-image.jpg" alt="fotoPastores" />
+        <img className="h-[640'x] w-[550px] mb-10" src="/img/bg-image.jpg" alt="fotoPastores" />
 
       <MyCarousel/>
       <Formulario/>

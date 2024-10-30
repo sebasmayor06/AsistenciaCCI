@@ -7,11 +7,11 @@
 }
 
 @keyframes slide {
-    0%, 15% {background-image: url("/public/img/vigilia.jpg");}
-    25%, 45% {background-image: url("/public/img/bautizo.jpg"); }
-    50%, 70% {background-image: url("/public/img/pozo.jpg");}
-    75%, 95%{background-image: url("/public/img/casaAvivamiento.jpg");}
-    100%, 0% {background-image: url("/public/img/logo.jpg");}
+    0%, 15% {background-image: url("/img/vigilia.jpg");}
+    25%, 45% {background-image: url("/img/bautizo.jpg"); }
+    50%, 70% {background-image: url("/img/pozo.jpg");}
+    75%, 95%{background-image: url("/img/casaAvivamiento.jpg");}
+    100%, 0% {background-image: url("/img/logo.jpg");}
     
 }
 
