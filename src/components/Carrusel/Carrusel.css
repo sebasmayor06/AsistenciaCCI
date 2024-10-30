@@ -1,0 +1,23 @@
+.slider{
+    background-size: 100% 100%;
+    width: 640px;
+    height: 360px;
+    border-radius: 10px;
+    animation: slide 10s infinite linear;
+}
+
+@keyframes slide {
+    0%, 15% {background-image: url("/public/img/vigilia.jpg");}
+    25%, 45% {background-image: url("/public/img/bautizo.jpg"); }
+    50%, 70% {background-image: url("/public/img/pozo.jpg");}
+    75%, 95%{background-image: url("/public/img/casaAvivamiento.jpg");}
+    100%, 0% {background-image: url("/public/img/logo.jpg");}
+    
+}
+
+@media (max-width: 600px) {
+    .slider{
+        width: 90vw; /* Ancho más grande en pantallas pequeñas */
+        height: calc(90vw * 9 / 16); /* Mantiene la relación de aspecto */
+    }
+}
