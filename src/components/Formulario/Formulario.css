@@ -1,6 +1,6 @@
 /* styles.css */
 .white-label .ant-form-item-label > label {
-    color: white;
+    color: #1d1d1d;
    
     font-size: 0.75rem; /* 12px */
         line-height: 1rem; /* 16px */
@@ -19,13 +19,13 @@
 
   /* RadioStyles.css */
 .white-radio .ant-radio-inner::after {
-    background-color: white !important;
+    background-color: #1d1d1d !important;
   }
   .white-radio .ant-radio-checked .ant-radio-inner {
-    border-color: white !important;
+    border-color: #1d1d1d !important;
   }
   .white-radio label {
-    color: white !important;
+    color: #1d1d1d !important;
   }
   
   

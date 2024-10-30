@@ -130,23 +130,23 @@ const App = () => {
       </Form.Item>
       <Form.Item name="bautizo" className='white-label' label="¿Eres bautizado(a)?😃">
       <Radio.Group className='flex flex-col'>
-        <Radio className='text-white text-xs md:text-xl mb-2' value={1}>Sí</Radio>
-        <Radio className='text-white text-xs md:text-xl mb-2' value={2}>No</Radio>
-        <Radio className='text-white text-xs md:text-xl mb-2' value={3}>Aun no pero quiero bautizarme, quiero agradar al Señor!!!</Radio>
+        <Radio className='text-[#1d1d1d] text-xs md:text-xl mb-2' value={1}>Sí</Radio>
+        <Radio className='text-[#1d1d1d] text-xs md:text-xl mb-2' value={2}>No</Radio>
+        <Radio className='text-[#1d1d1d] text-xs md:text-xl mb-2' value={3}>Aun no pero quiero bautizarme, quiero agradar al Señor!!!</Radio>
       </Radio.Group>
     </Form.Item>
-    <div className='border-dashed border p-4 rounded-2xl my-4'>
+    <div className='border-dashed border-[#1d1d1d] border p-4 rounded-2xl my-4'>
 
-        <Form.Item className='text-white'>
+        <Form.Item className='text-[#1d1d1d]'>
             <p className=' text-xs md:text-xl'>¿Este domingo puedes traer GRANOS (Cualquiera de estos: Enlatados, Lentejas, Frijoles, Azúcar, Arroz, etc.) como aporte para el Banco de Alimentos?</p>
             <p className=' text-xs md:text-xl'>NIÑOS, JÓVENES, ADULTOS, ANCIANOS, FAMILIAS TE LO AGRADECERÁN Y DIOS TE LO HA DE PAGAR</p>
             <p className=' text-xs md:text-xl'><i>(Por favor revisa la fecha de vencimiento de lo que traes al Banco de Alimentos)</i></p>
           </Form.Item>
           <Form.Item name="aporte" >
             <Radio.Group>
-              <Radio className='text-white text-xs md:text-xl mb-2 ' value="si">Sí, este domingo llevaré mi aporte 😃❤️🍞</Radio>
-              <Radio className='text-white text-xs md:text-xl mb-2' value="no">No puedo llevar este aporte 😔❤️</Radio>
-              <Radio className='text-white text-xs md:text-xl mb-2' value="necesito ayuda">Estoy pasando una situación económica difícil y necesito ser beneficiado del Banco de Alimentos 🥒🍞🥕🍏</Radio>
+              <Radio className='text-[#1d1d1d] text-xs md:text-xl mb-2 ' value="si">Sí, este domingo llevaré mi aporte 😃❤️🍞</Radio>
+              <Radio className='text-[#1d1d1d] text-xs md:text-xl mb-2' value="no">No puedo llevar este aporte 😔❤️</Radio>
+              <Radio className='text-[#1d1d1d] text-xs md:text-xl mb-2' value="necesito ayuda">Estoy pasando una situación económica difícil y necesito ser beneficiado del Banco de Alimentos 🥒🍞🥕🍏</Radio>
             </Radio.Group>
           </Form.Item>
     </div>
@@ -155,8 +155,8 @@ const App = () => {
           </Form.Item>
           <Form.Item name="nuevo" className='white-label' label="¿Asistes por primera vez a nuestra iglesia?" > 
                 <Radio.Group onChange={handleRadioChange}>
-                  <Radio className='text-white text-xs md:text-xl mb-2' value={1}>SI</Radio>
-                  <Radio className='text-white text-xs md:text-xl mb-2' value={0}>NO</Radio>
+                  <Radio className='text-[#1d1d1d] text-xs md:text-xl mb-2' value={1}>SI</Radio>
+                  <Radio className='text-[#1d1d1d] text-xs md:text-xl mb-2' value={0}>NO</Radio>
                 </Radio.Group>
           </Form.Item>
           {asistePorPrimeraVez === 1 && (
