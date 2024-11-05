@@ -30,7 +30,7 @@ const Formulario = (event_id) => {
   const handleConsulta = async (dni) => {
     
     try {
-      const response = await axios.post('http://localhost:3000/consultarAsistente', { dni }, {
+      const response = await axios.post('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/consultarAsistente', { dni }, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -65,14 +65,14 @@ const Formulario = (event_id) => {
     try {
       if (dataConsul === '') {
         
-        const response1 = await axios.post('http://localhost:3000/registerAsistente', formData, {
+        const response1 = await axios.post('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/registerAsistente', formData, {
           headers: {
             'Content-Type': 'application/json'
           }
         });
       }
 
-      const response2 = await axios.post('http://localhost:3000/resgisterAsistencia', formData2, {
+      const response2 = await axios.post('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/resgisterAsistencia', formData2, {
         headers: {
           'Content-Type': 'application/json'
         }

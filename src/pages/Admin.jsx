@@ -27,7 +27,7 @@ export default function Admin() {
             event_name : formData.event_name,
             location : formData.location
         }
-        const response = await axios.post('http://localhost:3000/registerEvent', formData2, {
+        const response = await axios.post('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/registerEvent', formData2, {
             headers: {
               'Content-Type': 'application/json'
             }

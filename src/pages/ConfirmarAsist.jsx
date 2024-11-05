@@ -19,7 +19,7 @@ const ConfirmarAsist = () => {
 
 //   const cargarDatosIniciales = async () => {
 //     try {
-//       const response = await axios.get('http://localhost:3000/consultarAsistenciaInicial');
+//       const response = await axios.get('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/consultarAsistenciaInicial');
 //       setTableData(response.data);
 //       setFullData(response.data);
 //     } catch (error) {
@@ -36,7 +36,7 @@ const ConfirmarAsist = () => {
       } else {
         filterData(searchText);
       }
-      await axios.post('http://localhost:3000/updateAsistencia', { dni, attended: newStatus, event_id }, {
+      await axios.post('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/updateAsistencia', { dni, attended: newStatus, event_id }, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -140,7 +140,7 @@ const ConfirmarAsist = () => {
       if (fechaEvento) {
         const fechaFormateada = moment(fechaEvento.$d).format('YYYY/MM/DD');
         const requestData = { fecha: fechaFormateada };
-        const response = await axios.post('http://localhost:3000/consultarAsistencia', requestData, {
+        const response = await axios.post('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/consultarAsistencia', requestData, {
           headers: {
             'Content-Type': 'application/json',
           },
