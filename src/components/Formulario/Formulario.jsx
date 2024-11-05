@@ -1,49 +1,31 @@
 import React, { useState } from 'react';
-import { Button, Form, Input, Radio, Select, Tag } from 'antd';
+import { Button, Form, Input, Radio, Select, Tag, DatePicker } from 'antd';
 import './Formulario.css'
 import data from '../../../public/data'
 import axios from 'axios';
+import moment from 'moment';
 
-const customizeRequiredMark = (label, { required }) => (
-  <>
-    {required ? <Tag color="error">Required</Tag> : <Tag color="warning">optional</Tag>}
-    {label}
-  </>
-);
-const App = () => {
+// const customizeRequiredMark = (label, { required }) => (
+//   <>
+//     {required ? <Tag color="error">Required</Tag> : <Tag color="warning">optional</Tag>}
+//     {label}
+//   </>
+// );
+const Formulario = (event_id) => {
+  
   const [form] = Form.useForm();
-  const [requiredMark, setRequiredMarkType] = useState('optional');
-  const onRequiredTypeChange = ({ requiredMarkValue }) => {
-    setRequiredMarkType(requiredMarkValue);
-  };
+  // const [requiredMark, setRequiredMarkType] = useState('optional');
+  // const onRequiredTypeChange = ({ requiredMarkValue }) => {
+  //   setRequiredMarkType(requiredMarkValue);
+  // };
   const [asistePorPrimeraVez, setAsistePorPrimeraVez] = useState(null);
+  const [dataConsul, setDataConsul] = useState('')
 
   const handleRadioChange = (e) => {
     setAsistePorPrimeraVez(e.target.value);
   };
 
   const { Option } = Select;
-
-  const handleSubmit = async () => {
-    const formData = form.getFieldsValue();
-    
-    try {
-      const response = await axios.post('http://localhost:3000/registerAsistente', formData, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-  
-      if (response.status === 200) {
-        window.location.reload();
-      } else {
-        console.error('Error en la solicitud:', response.status);
-      }
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
-    }
-    
-  };
 
   const handleConsulta = async (dni) => {
     
@@ -54,13 +36,57 @@ const App = () => {
         }
       });
 
-      const {} = response.data
-      form.setFieldsValue(response.data)
+      const dataWithMoment = {
+        ...response.data,
+        fecha_de_nacimiento: response.data.fecha_de_nacimiento ? moment(response.data.fecha_de_nacimiento) : null,
+      };
+  
+      setDataConsul(response.data);
+      form.setFieldsValue(dataWithMoment);
     } catch (error) {
       console.error('Error en la solicitud:', error);
     }
   };
+  const handleSubmit = async () => {
+    const {dni, full_name, estado_civil, phone_number, fecha_de_nacimiento, ciudad, barrio, direccion, bautizo } = form.getFieldValue()
+    const formData = {dni, full_name, estado_civil, phone_number, fecha_de_nacimiento, ciudad, barrio, direccion, bautizo};
+    const formData2 = {
+      dni: formData.dni,
+      event_id: event_id.eventId,
+      registration_time: moment().format('YYYY-MM-DD HH:mm:ss'), // Fecha y hora actual
+      update_asit: moment().format('YYYY-MM-DD HH:mm:ss'),       // Fecha y hora actual
+      attended: false,
+      peticion: form.getFieldValue().peticion,
+      aporte: form.getFieldValue().aporte, 
+      nuevo: form.getFieldValue().nuevo, 
+      nombreinv: form.getFieldValue().nombreinv
+    };
+    
+    try {
+      if (dataConsul === '') {
+        
+        const response1 = await axios.post('http://localhost:3000/registerAsistente', formData, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+      }
 
+      const response2 = await axios.post('http://localhost:3000/resgisterAsistencia', formData2, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      if ( response2.status === 200) {
+        window.location.reload();
+      } else {
+        console.error('Error en la solicitud:', response2.status);
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
+    
+  };
 
   const handleBlur = (e) => {
     const dni = e.target.value;
@@ -74,19 +100,19 @@ const App = () => {
     className= 'w-80 md:w-[600px] mt-10 '
       form={form}
       layout="vertical"
-      initialValues={{
-        requiredMarkValue: requiredMark,
-      }}
-      onValuesChange={onRequiredTypeChange}
-      requiredMark={requiredMark === 'customize' ? customizeRequiredMark : requiredMark}
+      // initialValues={{
+      //   requiredMarkValue: requiredMark,
+      // }}
+      // onValuesChange={onRequiredTypeChange}
+      // requiredMark={requiredMark === 'customize' ? customizeRequiredMark : requiredMark}
       onFinish={handleSubmit}
     >
       
       <Form.Item name="dni" className='white-label' label="Numero Cedula:"  >
-      <Input onBlur={handleBlur}/>
+      <Input onBlur={handleBlur} disabled={dataConsul}/>
       </Form.Item>
       <Form.Item name="full_name" className='white-label' label="Nombre y apellido 📝:">
-        <Input  />
+        <Input  disabled={dataConsul}/>
       </Form.Item>
       <Form.Item name="estado_civil" className='white-label' label="Estado civil:">
           <Select>
@@ -101,16 +127,13 @@ const App = () => {
       <Form.Item name="phone_number"  className='white-label' label="Numero Telefónico 📱📞☎️">
         <Input/>
       </Form.Item>
-      <Form.Item name="edad" className='white-label' label="Edad  🎂:">
-        <Select>
-           {Array.from({ length: 80 }, (_, i) => (
-             <Option key={i + 1} value={i + 1}>
-               {i + 1}
-             </Option>
-           ))}
-             <Option key={100} value={100} >Mas de 80</Option>
-        </Select>
-      </Form.Item>
+      <Form.Item
+            className="white-label md:w-96"
+            label="Fecha de nacimiento"
+            name="fecha_de_nacimiento"
+          >
+            <DatePicker disabled={dataConsul}/>
+          </Form.Item>
       <Form.Item name="ciudad" className='white-label' label="¿Desde qué ciudad nos visitas?🚗✈️🚲🛵🚌" >
         <Select>
           {
@@ -171,4 +194,4 @@ const App = () => {
     </Form>
   );
 };
-export default App;
+export default Formulario;

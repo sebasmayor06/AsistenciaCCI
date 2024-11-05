@@ -10,7 +10,7 @@ const data = {
       {"value": "joven", "label": "Joven"}
     ],
     "locations": [
-      {"value": "santanderDeQuilichao", "label": "Santander de Quilichao"},
+      {"value": "SantanderDeQuilichao", "label": "Santander de Quilichao"},
       {"value": "caloto", "label": "Caloto"},
       {"value": "villaRica", "label": "Villa Rica"},
       {"value": "padilla", "label": "Padilla"},
