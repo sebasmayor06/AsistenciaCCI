@@ -111,7 +111,8 @@ const ConfirmarAsist = () => {
       
     { title: 'Ciudad', dataIndex: 'ciudad', key: 'ciudad' },
     { title: 'Barrio', dataIndex: 'barrio', key: 'barrio' },
-    { title: 'Fecha del Evento', dataIndex: 'event_date', key: 'event_date', render: date => moment(date).format('YYYY-MM-DD') },
+    { title: 'Fecha del Evento', dataIndex: 'event_date', key: 'event_date', render: date => moment.utc(date).format('YYYY-MM-DD') },
+
     {
         title: 'Asiste por 1ra vez',
         dataIndex: 'nuevo',
