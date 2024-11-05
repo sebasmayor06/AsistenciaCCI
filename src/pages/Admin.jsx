@@ -32,7 +32,7 @@ export default function Admin() {
               'Content-Type': 'application/json'
             }
           });
-          setLink(`http://localhost:5173/Asistencia/${response.data.event_id}`)
+          setLink(`https://asistencia-cci-front-dc13af93f3e4.herokuapp.com/Asistencia/${response.data.event_id}`)
           
       } else {
         console.log('No se seleccionó una fecha');
