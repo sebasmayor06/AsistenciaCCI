@@ -21,7 +21,7 @@ export default function Admin() {
       const {fechaEvento} = formData;
 
       if (fechaEvento) {
-        const fechaFormateada = moment(fechaEvento.$d).format('DD/MM/YYYY');
+        const fechaFormateada = moment(fechaEvento.$d).format('YYYY-MM-DD');
         const formData2 = {
             event_date : fechaFormateada,
             event_name : formData.event_name,
