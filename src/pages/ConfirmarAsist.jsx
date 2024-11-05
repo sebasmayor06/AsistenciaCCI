@@ -38,9 +38,10 @@ const ConfirmarAsist = () => {
       }
       await axios.post('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/updateAsistencia', { dni, attended: newStatus, event_id }, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-      });
+        withCredentials: true // Esto asegura que las cookies o credenciales se envíen
+    });
     } catch (error) {
       console.error('Error al actualizar la asistencia:', error);
     }
@@ -142,9 +143,10 @@ const ConfirmarAsist = () => {
         const requestData = { fecha: fechaFormateada };
         const response = await axios.post('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/consultarAsistencia', requestData, {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
-        });
+          withCredentials: true // Esto asegura que las cookies o credenciales se envíen
+      });
         setTableData(response.data);
         setFullData(response.data);
       } else {

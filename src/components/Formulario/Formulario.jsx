@@ -33,8 +33,9 @@ const Formulario = (event_id) => {
       const response = await axios.post('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/consultarAsistente', { dni }, {
         headers: {
           'Content-Type': 'application/json'
-        }
-      });
+        },
+        withCredentials: true // Esto asegura que las cookies o credenciales se envíen
+    });
 
       const dataWithMoment = {
         ...response.data,
@@ -68,15 +69,17 @@ const Formulario = (event_id) => {
         const response1 = await axios.post('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/registerAsistente', formData, {
           headers: {
             'Content-Type': 'application/json'
-          }
-        });
+          },
+          withCredentials: true // Esto asegura que las cookies o credenciales se envíen
+      });
       }
 
       const response2 = await axios.post('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/resgisterAsistencia', formData2, {
         headers: {
           'Content-Type': 'application/json'
-        }
-      });
+        },
+        withCredentials: true // Esto asegura que las cookies o credenciales se envíen
+    });
       if ( response2.status === 200) {
         window.location.reload();
       } else {

@@ -28,10 +28,12 @@ export default function Admin() {
             location : formData.location
         }
         const response = await axios.post('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/registerEvent', formData2, {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          withCredentials: true // Esto asegura que las cookies o credenciales se envíen
+      });
+      
           setLink(`https://asistencia-cci-front-dc13af93f3e4.herokuapp.com/Asistencia/${response.data.event_id}`)
           
       } else {
