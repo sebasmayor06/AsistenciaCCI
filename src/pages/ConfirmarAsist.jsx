@@ -1,31 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Checkbox, Form, Button, DatePicker, ConfigProvider, Input } from 'antd';
+import { Table, Checkbox, Form, Button, DatePicker, ConfigProvider, Input, Select } from 'antd';
 import esES from 'antd/lib/locale/es_ES';
 import 'moment/locale/es';
 import moment from 'moment';
 import axios from 'axios';
+import BotonExcel from '../components/BotonExcel/BotonExcel';
 
 moment.locale('es');
 
 const ConfirmarAsist = () => {
+  // const api = 'http://localhost:3000';
+  const api = 'https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com' 
+
+
   const [form] = Form.useForm();
   const [tableData, setTableData] = useState([]);
   const [fullData, setFullData] = useState([]);
   const [searchText, setSearchText] = useState('');
-
-//   useEffect(() => {
-//     cargarDatosIniciales();
-//   }, []);
-
-//   const cargarDatosIniciales = async () => {
-//     try {
-//       const response = await axios.get('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/consultarAsistenciaInicial');
-//       setTableData(response.data);
-//       setFullData(response.data);
-//     } catch (error) {
-//       console.error('Error al cargar los datos iniciales:', error);
-//     }
-//   };
+  const [pageSize, setPageSize] = useState(10); // Tamaño de página inicial
 
   const handleAsistio = async (dni, newStatus, event_id) => {
     try {
@@ -36,10 +28,8 @@ const ConfirmarAsist = () => {
       } else {
         filterData(searchText);
       }
-      await axios.post('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/updateAsistencia', { dni, attended: newStatus, event_id }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      await axios.post(`${api}/updateAsistencia`, { dni, attended: newStatus, event_id }, {
+        headers: { 'Content-Type': 'application/json' },
       });
     } catch (error) {
       console.error('Error al actualizar la asistencia:', error);
@@ -57,70 +47,45 @@ const ConfirmarAsist = () => {
     );
     setTableData(filteredData);
   };
-  
 
   const columns = [
-    {
-        title: '#',
-        key: 'index',
-        render: (text, record, index) => index + 1, // +1 para empezar la numeración en 1 en lugar de 0
-      },
-    { title: 'Nombre',
-        dataIndex: 'full_name',
-        key: 'full_name',
-        render: text => <a>{text}</a>,
-        filterDropdown: () => (
-          <Input
-            placeholder="Buscar por nombre"
-            value={searchText}
-            onChange={e => handleSearch(e.target.value)}
-            onPressEnter={() => handleSearch(searchText)}
-          />
-        ),},
+    { title: '#', key: 'index', render: (text, record, index) => index + 1 },
+    { title: 'Nombre', dataIndex: 'full_name', key: 'full_name' },
     { title: 'Numero Teléfonico', dataIndex: 'phone_number', key: 'phone_number' },
     {
-        title: 'Rango Edad',
-        dataIndex: 'fecha_de_nacimiento',
-        key: 'fecha_de_nacimiento',
-        render: date => {
-          const age = moment().diff(moment(date), 'years');
-          if (age >= 18) {
-            return 'Adulto';
-          } else if (age >= 12) {
-            return 'Joven';
-          } else {
-            return 'Iglekids';
-          }
-        },
-        filters: [
-          { text: 'Adulto', value: 'Adulto' },
-          { text: 'Joven', value: 'Joven' },
-          { text: 'Iglekids', value: 'Iglekids' }
-        ],
-        onFilter: (value, record) => {
-          const age = moment().diff(moment(record.fecha_de_nacimiento), 'years');
-          if (age >= 18) {
-            return value === 'Adulto';
-          } else if (age >= 12) {
-            return value === 'Joven';
-          } else {
-            return value === 'Iglekids';
-          }
-        }
+      title: 'Rango Edad',
+      dataIndex: 'fecha_de_nacimiento',
+      key: 'fecha_de_nacimiento',
+      render: date => {
+        const age = moment().diff(moment(date), 'years');
+        if (age >= 18) return 'Adulto';
+        if (age >= 12) return 'Joven';
+        return 'Iglekids';
       },
-      
+      filters: [
+        { text: 'Adulto', value: 'Adulto' },
+        { text: 'Joven', value: 'Joven' },
+        { text: 'Iglekids', value: 'Iglekids' }
+      ],
+      onFilter: (value, record) => {
+        const age = moment().diff(moment(record.fecha_de_nacimiento), 'years');
+        return (
+          (age >= 18 && value === 'Adulto') ||
+          (age >= 12 && age < 18 && value === 'Joven') ||
+          (age < 12 && value === 'Iglekids')
+        );
+      }
+    },
     { title: 'Ciudad', dataIndex: 'ciudad', key: 'ciudad' },
     { title: 'Barrio', dataIndex: 'barrio', key: 'barrio' },
     { title: 'Fecha del Evento', dataIndex: 'event_date', key: 'event_date', render: date => moment.utc(date).format('YYYY-MM-DD') },
-
     {
-        title: 'Asiste por 1ra vez',
-        dataIndex: 'nuevo',
-        key: 'nuevo',
-        render: nuevo => nuevo ? 'Sí' : 'No'
-      },
+      title: 'Asiste por 1ra vez',
+      dataIndex: 'nuevo',
+      key: 'nuevo',
+      render: nuevo => nuevo ? 'Sí' : 'No'
+    },
     { title: 'Quien te invito', dataIndex: 'nombreinv', key: 'nombreinv' },
-
     {
       title: 'Asistió',
       dataIndex: 'attended',
@@ -141,10 +106,8 @@ const ConfirmarAsist = () => {
       if (fechaEvento) {
         const fechaFormateada = moment(fechaEvento.$d).format('YYYY/MM/DD');
         const requestData = { fecha: fechaFormateada };
-        const response = await axios.post('https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/consultarAsistencia', requestData, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+        const response = await axios.post(`${api}/consultarAsistencia`, requestData, {
+          headers: { 'Content-Type': 'application/json' },
         });
         setTableData(response.data);
         setFullData(response.data);
@@ -159,6 +122,7 @@ const ConfirmarAsist = () => {
   return (
     <ConfigProvider locale={esES}>
       <div className="bg-[#1d1d1d] w-screen min-h-screen flex justify-start items-center flex-col">
+        <h5 className='mt-4 font-semibold text-xl md:text-4xl'>CONFIMACIÓN DE ASISTENCIA</h5>
         <Form
           className="border border-[#f5f5f5] p-6 rounded-2xl border-dashed flex justify-center items-center flex-col mt-10"
           form={form}
@@ -177,7 +141,39 @@ const ConfirmarAsist = () => {
             <Button type="primary" htmlType="submit">ENVIAR</Button>
           </Form.Item>
         </Form>
-        <Table className='mt-4 w-[1200px]' columns={columns} dataSource={tableData} rowKey="dni" scroll={{ x: 1000 }} />
+
+        <Input
+          placeholder="Buscar por nombre"
+          value={searchText}
+          onChange={e => handleSearch(e.target.value)}
+          className="mb-4 mt-4 w-80"
+        />
+
+        <div className=" flex flex-row justify-between md:w-[1200px] gap-4">
+          <Select
+            value={pageSize}
+            onChange={(value) => setPageSize(value)}
+            options={[
+              { value: 10, label: '10' },
+              { value: 25, label: '25' },
+              { value: 50, label: '50' },
+              { value: 100, label: '100' },
+            ]}
+            style={{ width: 80 }}
+          />
+          <BotonExcel fullData = {fullData}/>
+        </div>
+
+        <Table
+          className='mt-4 w-[1200px]'
+          columns={columns}
+          dataSource={tableData}
+          rowKey="dni"
+          scroll={{ x: 1000 }}
+          pagination={{
+            pageSize: pageSize, // Tamaño de página basado en el `Select`
+          }}
+        />
       </div>
     </ConfigProvider>
   );
