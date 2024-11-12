@@ -63,8 +63,7 @@ const translateMonthToSpanish = (month) => {
 // Configura moment para usar el locale español
 moment.locale('es');
 export default function Asistencia() {
-    //  const api = 'http://localhost:3000'
- const api = 'https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/'
+  const apiUrl = import.meta.env.VITE_URL;
 
   const [fecha, setFecha] = useState('')
 
@@ -75,7 +74,7 @@ export default function Asistencia() {
     }, [eventId])
 
     const handleConsultaEvent = async (eventId) => {
-      const response = await axios.post(`${api}/consultarEvento`, { eventId }, {
+      const response = await axios.post(`${apiUrl}/consultarEvento`, { eventId }, {
         headers: {
             'Content-Type': 'application/json'
         }
