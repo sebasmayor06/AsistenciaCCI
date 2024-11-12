@@ -80,7 +80,7 @@ export default function Asistencia() {
         }
     });
     
-    const eventDate = moment.utc(response.data.event_date).local(); 
+    const eventDate = moment.utc(response.data.event_date); 
 
     console.log(eventDate);
     
