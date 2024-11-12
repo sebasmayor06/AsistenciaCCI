@@ -14,7 +14,8 @@ moment.locale('es');
 export default function GeneratorLink() {
 
 
-  const apiUrl = import.meta.env.VITE_URL;
+//  const api = 'http://localhost:3000'
+ const api = 'https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/'
 
 
 let urlCompleta = window.location.href;
@@ -41,7 +42,7 @@ let baseUrl = objetoUrl.origin;
             event_name : formData.event_name,
             location : formData.location
         }
-        const response = await axios.post(`${apiUrl}/registerEvent`, formData2, {
+        const response = await axios.post(`${api}/registerEvent`, formData2, {
             headers: {
               'Content-Type': 'application/json'
             }
