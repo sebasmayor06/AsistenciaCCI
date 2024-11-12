@@ -13,7 +13,7 @@ export default function Admin() {
     <div className='bg-[#1d1d1d] w-screen min-h-screen flex justify-start items-center flex-col'>
       <Flex className='m-4 flex justify-center items-center' gap="small" wrap>
         <Button className={activo === 'link' ? 'active-button' : ''} type="primary" onClick={() => setActivo('link')}>Generar Link</Button>
-        <Button className={activo === 'usuarios' ? 'active-button' : ''} type="primary" onClick={() => setActivo('usuarios')}>Usuarios registrados</Button>
+        <Button className={activo === 'usuarios' ? 'active-button' : ''} type="primary" onClick={() => setActivo('usuarios')}>Miembros registrados</Button>
         <Button className={activo === 'asistencia' ? 'active-button' : ''} type="primary" onClick={() => setActivo('asistencia')}>Asistencia</Button>
         <Button className={activo === 'cumple' ? 'active-button' : ''} type="primary" onClick={() => setActivo('cumple')}>Tabla Cumpleaños</Button>
       </Flex>
