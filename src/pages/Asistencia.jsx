@@ -82,11 +82,21 @@ export default function Asistencia() {
     
     const eventDate = moment.utc(response.data.event_date).local(); 
 
+    console.log(eventDate);
+    
+
+
     const dayInEnglish = eventDate.format('dddd'); 
     const monthInEnglish = eventDate.format('MMMM'); 
   
     const dayInSpanish = translateDayToSpanish(dayInEnglish);
     const monthInSpanish = translateMonthToSpanish(monthInEnglish);
+
+console.log(dayInSpanish);
+console.log(monthInSpanish);
+console.log(eventDate.date());
+
+
   
     const formattedDate = `${dayInSpanish} ${eventDate.date()} de ${monthInSpanish} del ${eventDate.year()}`;
   
