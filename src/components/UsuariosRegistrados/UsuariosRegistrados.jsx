@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Input, Table, Select } from 'antd';
+import BotonExcel from '../BotonExcel/BotonExcel';
+
 
 export default function UsuariosRegistrados() {
-  // const api = 'http://localhost:3000';
-  const api = 'https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com' 
+  const apiUrl = import.meta.env.VITE_URL;
+  const bandera= 'usuRegister'
 
   const [tableData, setTableData] = useState([]);
   const [searchText, setSearchText] = useState('');
@@ -61,7 +63,7 @@ export default function UsuariosRegistrados() {
   
   const handleConsultarReg = async () => {
     try {
-      const response = await axios.get(`${api}/consultarRegistrados`, {
+      const response = await axios.get(`${apiUrl}/consultarRegistrados`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -81,7 +83,7 @@ export default function UsuariosRegistrados() {
     <>
       <h5 className='mt-4 mb-5 font-semibold text-xl md:text-4xl'>USUARIOS REGISTRADOS</h5>
       
-      <div className="mb-4 flex justify-end md:w-[1200px]">
+      <div className="mb-4 flex justify-between md:w-[1200px]">
         <Select
           value={pageSize}
           onChange={(value) => setPageSize(value)}
@@ -93,6 +95,7 @@ export default function UsuariosRegistrados() {
           ]}
           style={{ width: 80 }}
         />
+        <BotonExcel fullData = {fullData}  bandera ={bandera}/>
       </div>
       
       <Table

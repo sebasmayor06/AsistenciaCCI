@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Input, Table, Select } from 'antd';
+import BotonExcel from '../BotonExcel/BotonExcel';
+
 
 export default function TablaCumple() {
-  // const api = 'http://localhost:3000';
-  const api = 'https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com' 
 
+  const apiUrl = import.meta.env.VITE_URL;
+
+const bandera = 'cumple'
   const [tableData, setTableData] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [fullData, setFullData] = useState([]);
@@ -54,7 +57,7 @@ export default function TablaCumple() {
 
   const handleConsultarReg = async () => {
     try {
-      const response = await axios.get(`${api}/consultarRegistrados`, {
+      const response = await axios.get(`${apiUrl}/consultarRegistrados`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -99,8 +102,10 @@ export default function TablaCumple() {
           onChange={e => handleSearch(e.target.value)}
           style={{ width: 200 }}
         />
+
       </div>
-        <Select
+      <div className=' flex justify-between md:w-[1200px]'>
+      <Select
           value={pageSize}
           onChange={(value) => setPageSize(value)}
           options={[
@@ -112,6 +117,10 @@ export default function TablaCumple() {
           style={{ width: 100 }}
           placeholder="Registros por página"
         />
+      <BotonExcel fullData = {fullData}  bandera ={bandera}/>
+
+      </div>
+        
       <Table
         className='mt-4 w-[1200px]'
         columns={columns}

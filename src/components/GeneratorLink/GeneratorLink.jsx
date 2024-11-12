@@ -13,11 +13,16 @@ moment.locale('es');
 
 export default function GeneratorLink() {
 
-    const api = 'https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com' 
-  // const api = 'http://localhost:3000' 
 
-  const apiFront = 'https://asistencia-cci-front-dc13af93f3e4.herokuapp.com'
-  // const apiFront = 'http://http://localhost:5173'
+  const apiUrl = import.meta.env.VITE_URL;
+
+
+let urlCompleta = window.location.href;
+
+let objetoUrl = new URL(urlCompleta);
+
+let baseUrl = objetoUrl.origin; 
+
 
   const [form] = Form.useForm();
   const [link, setLink] = useState('')
@@ -36,12 +41,12 @@ export default function GeneratorLink() {
             event_name : formData.event_name,
             location : formData.location
         }
-        const response = await axios.post(`${api}/registerEvent`, formData2, {
+        const response = await axios.post(`${apiUrl}/registerEvent`, formData2, {
             headers: {
               'Content-Type': 'application/json'
             }
           });
-          setLink(`${apiFront}/Asistencia/${response.data.event_id}`)
+          setLink(`${baseUrl}/Asistencia/${response.data.event_id}`)
           
       } else {
         console.log('No se seleccionó una fecha');

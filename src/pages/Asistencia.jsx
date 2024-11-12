@@ -63,11 +63,10 @@ const translateMonthToSpanish = (month) => {
 // Configura moment para usar el locale español
 moment.locale('es');
 export default function Asistencia() {
+  const apiUrl = import.meta.env.VITE_URL;
 
   const [fecha, setFecha] = useState('')
 
-   const api = 'https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com' 
-  // const api = 'http://localhost:3000'
     const { eventId } = useParams();
 
     useEffect(() => {
@@ -75,13 +74,13 @@ export default function Asistencia() {
     }, [eventId])
 
     const handleConsultaEvent = async (eventId) => {
-      const response = await axios.post(`${api}/consultarEvento`, { eventId }, {
+      const response = await axios.post(`${apiUrl}/consultarEvento`, { eventId }, {
         headers: {
             'Content-Type': 'application/json'
         }
     });
     
-    const eventDate = moment(response.data.event_date); 
+    const eventDate = moment.utc(response.data.event_date).local(); 
 
     const dayInEnglish = eventDate.format('dddd'); 
     const monthInEnglish = eventDate.format('MMMM'); 
