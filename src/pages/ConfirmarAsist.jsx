@@ -9,8 +9,7 @@ import BotonExcel from '../components/BotonExcel/BotonExcel';
 moment.locale('es');
 
 const ConfirmarAsist = () => {
-  //  const api = 'http://localhost:3000'
- const api = 'https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/'
+  const apiUrl = import.meta.env.VITE_URL;
 const bandera = 'confAsist'
 
 
@@ -29,7 +28,7 @@ const bandera = 'confAsist'
       } else {
         filterData(searchText);
       }
-      await axios.post(`${api}/updateAsistencia`, { dni, attended: newStatus, event_id }, {
+      await axios.post(`${apiUrl}/updateAsistencia`, { dni, attended: newStatus, event_id }, {
         headers: { 'Content-Type': 'application/json' },
       });
     } catch (error) {
@@ -107,7 +106,7 @@ const bandera = 'confAsist'
       if (fechaEvento) {
         const fechaFormateada = moment(fechaEvento.$d).format('YYYY/MM/DD');
         const requestData = { fecha: fechaFormateada };
-        const response = await axios.post(`${api}/consultarAsistencia`, requestData, {
+        const response = await axios.post(`${apiUrl}/consultarAsistencia`, requestData, {
           headers: { 'Content-Type': 'application/json' },
         });
         setTableData(response.data);

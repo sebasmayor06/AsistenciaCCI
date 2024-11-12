@@ -6,8 +6,7 @@ import BotonExcel from '../BotonExcel/BotonExcel';
 
 export default function TablaCumple() {
 
-  //  const api = 'http://localhost:3000'
- const api = 'https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/'
+  const apiUrl = import.meta.env.VITE_URL;
 
 const bandera = 'cumple'
   const [tableData, setTableData] = useState([]);
@@ -58,7 +57,7 @@ const bandera = 'cumple'
 
   const handleConsultarReg = async () => {
     try {
-      const response = await axios.get(`${api}/consultarRegistrados`, {
+      const response = await axios.get(`${apiUrl}/consultarRegistrados`, {
         headers: {
           'Content-Type': 'application/json',
         },
