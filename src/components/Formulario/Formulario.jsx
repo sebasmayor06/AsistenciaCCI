@@ -15,7 +15,8 @@ import moment from 'moment';
 const Formulario = (event_id) => {
   
   
-  const apiUrl = import.meta.env.VITE_URL;
+  //  const api = 'http://localhost:3000'
+ const api = 'https://asistencia-cci-backend-bd9b1252bc67.herokuapp.com/'
 
   const [form] = Form.useForm();
   // const [requiredMark, setRequiredMarkType] = useState('optional');
@@ -37,7 +38,7 @@ const Formulario = (event_id) => {
   const handleConsultarAsistenciaGet = async (event_id) => {
     try {
 
-      const response = await axios.post(`${apiUrl}/consultarAsistenciaEvent`, { event_id }, {
+      const response = await axios.post(`${api}/consultarAsistenciaEvent`, { event_id }, {
         headers: {
             'Content-Type': 'application/json'
         }
@@ -77,7 +78,7 @@ const Formulario = (event_id) => {
   const handleConsulta = async (dni) => {
     
     try {
-      const response = await axios.post(`${apiUrl}/consultarAsistente`, { dni }, {
+      const response = await axios.post(`${api}/consultarAsistente`, { dni }, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -113,14 +114,14 @@ const Formulario = (event_id) => {
     try {
       if (dataConsul === '') {
         
-        const response1 = await axios.post(`${apiUrl}/registerAsistente`, formData, {
+        const response1 = await axios.post(`${api}/registerAsistente`, formData, {
           headers: {
             'Content-Type': 'application/json'
           }
         });
       }
 
-      const response2 = await axios.post(`${apiUrl}/resgisterAsistencia`, formData2, {
+      const response2 = await axios.post(`${api}/resgisterAsistencia`, formData2, {
         headers: {
           'Content-Type': 'application/json'
         }
