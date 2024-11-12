@@ -87,7 +87,7 @@ let baseUrl = objetoUrl.origin;
                 <Input  />
             </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">ENVIAR</Button>
+            <Button type="primary" htmlType="submit">GENERAR</Button>
           </Form.Item>
         </Form>
         <div className='flex flex-row mt-20 gap-2 '>
