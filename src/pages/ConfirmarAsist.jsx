@@ -10,14 +10,13 @@ moment.locale('es');
 
 const ConfirmarAsist = () => {
   const apiUrl = import.meta.env.VITE_URL;
-const bandera = 'confAsist'
-
+  const bandera = 'confAsist';
 
   const [form] = Form.useForm();
   const [tableData, setTableData] = useState([]);
   const [fullData, setFullData] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [pageSize, setPageSize] = useState(10); // Tamaño de página inicial
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 }); 
 
   const handleAsistio = async (dni, newStatus, event_id) => {
     try {
@@ -49,7 +48,11 @@ const bandera = 'confAsist'
   };
 
   const columns = [
-    { title: '#', key: 'index', render: (text, record, index) => index + 1 },
+    { 
+      title: '#', 
+      key: 'index', 
+      render: (text, record, index) => (pagination.current - 1) * pagination.pageSize + index + 1
+    },
     { title: 'Nombre', dataIndex: 'full_name', key: 'full_name' },
     { title: 'Numero Teléfonico', dataIndex: 'phone_number', key: 'phone_number' },
     {
@@ -122,7 +125,7 @@ const bandera = 'confAsist'
   return (
     <ConfigProvider locale={esES}>
       <div className="bg-[#1d1d1d] w-screen min-h-screen flex justify-start items-center flex-col">
-        <h5 className='mt-4 font-semibold text-xl md:text-4xl'>CONFIMACIÓN DE ASISTENCIA</h5>
+        <h5 className='mt-4 font-semibold text-xl md:text-4xl text-white'>CONFIRMACIÓN DE ASISTENCIA</h5>
         <Form
           className="border border-[#f5f5f5] p-6 rounded-2xl border-dashed flex justify-center items-center flex-col mt-10"
           form={form}
@@ -149,10 +152,10 @@ const bandera = 'confAsist'
           className="mb-4 mt-4 w-80"
         />
 
-        <div className=" flex flex-row justify-between md:w-[1200px] gap-4">
+        <div className="flex flex-row justify-between md:w-[1200px] gap-4">
           <Select
-            value={pageSize}
-            onChange={(value) => setPageSize(value)}
+            value={pagination.pageSize}
+            onChange={(value) => setPagination({ ...pagination, pageSize: value })}
             options={[
               { value: 10, label: '10' },
               { value: 25, label: '25' },
@@ -161,7 +164,7 @@ const bandera = 'confAsist'
             ]}
             style={{ width: 80 }}
           />
-          <BotonExcel fullData = {fullData}  bandera ={bandera}/>
+          <BotonExcel fullData={fullData} bandera={bandera} />
         </div>
 
         <Table
@@ -171,7 +174,9 @@ const bandera = 'confAsist'
           rowKey="dni"
           scroll={{ x: 1000 }}
           pagination={{
-            pageSize: pageSize, // Tamaño de página basado en el `Select`
+            current: pagination.current,
+            pageSize: pagination.pageSize,
+            onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize }),
           }}
         />
       </div>

@@ -3,15 +3,14 @@ import axios from 'axios';
 import { Input, Table, Select } from 'antd';
 import BotonExcel from '../BotonExcel/BotonExcel';
 
-
 export default function UsuariosRegistrados() {
   const apiUrl = import.meta.env.VITE_URL;
-  const bandera= 'usuRegister'
+  const bandera = 'usuRegister';
 
   const [tableData, setTableData] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [fullData, setFullData] = useState([]);
-  const [pageSize, setPageSize] = useState(10); // Tamaño de página inicial
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 }); // Incluye estado de paginación
 
   const handleSearch = (value) => {
     setSearchText(value);
@@ -26,7 +25,11 @@ export default function UsuariosRegistrados() {
   };
 
   const columns = [
-    { title: '#', key: 'index', render: (text, record, index) => index + 1 },
+    {
+      title: '#', 
+      key: 'index', 
+      render: (text, record, index) => ((pagination.current - 1) * pagination.pageSize) + index + 1 // Correct pagination index
+    },
     { title: 'DNI', dataIndex: 'dni', key: 'dni' },
     {
       title: 'Nombre',
@@ -42,25 +45,40 @@ export default function UsuariosRegistrados() {
         />
       ),
     },
-    { title: 'Estado Civil', dataIndex: 'estado_civil', key: 'estado_civil' },
+    { title: 'Estado Civil', dataIndex: 'estado_civil', key: 'estado_civil', 
+      render: (text) => {
+        switch (text) {
+          case 'nino': return 'Niño';
+          case 'soltero': return 'Soltero(a)';
+          case 'casado': return 'Casado(a)';
+          case 'separado': return 'Separado(a)';
+          case 'viudo': return 'Viudo(a)';
+          case 'divorciado': return 'Divorciado(a)';
+          case 'joven': return 'Joven';
+          case 'unionLibre': return 'Unión Libre';
+          default: return text;
+        }
+      }
+    },
     { title: 'Número Telefónico', dataIndex: 'phone_number', key: 'phone_number' },
     { title: 'Ciudad', dataIndex: 'ciudad', key: 'ciudad' },
     { title: 'Barrio', dataIndex: 'barrio', key: 'barrio' },
     { title: 'Dirección', dataIndex: 'direccion', key: 'direccion' },
-    {
-      title: 'Bautizo',
-      dataIndex: 'bautizo',
-      key: 'bautizo',
+    { title: 'Bautizo', dataIndex: 'bautizo', key: 'bautizo',
       render: text => {
-        if (text === 1) return 'Sí';
-        if (text === 2) return 'No';
-        if (text === 3) return 'Aún no';
-        return 'N/A';
-      },
+        switch (text) {
+          case 1: return 'Sí';
+          case 2: return 'No';
+          case 3: return 'Aún no';
+          default: return 'N/A';
+        }
+      }
     },
-    { title: 'Fecha de Nacimiento', dataIndex: 'fecha_de_nacimiento', key: 'fecha_de_nacimiento', render: date => date ? new Date(date).toLocaleDateString() : 'N/A' },
+    { title: 'Fecha de Nacimiento', dataIndex: 'fecha_de_nacimiento', key: 'fecha_de_nacimiento', 
+      render: date => date ? String(date).split('T')[0] : 'N/A'
+    },
   ];
-  
+
   const handleConsultarReg = async () => {
     try {
       const response = await axios.get(`${apiUrl}/consultarRegistrados`, {
@@ -69,7 +87,7 @@ export default function UsuariosRegistrados() {
         },
       });
       setTableData(response.data);
-      setFullData(response.data); 
+      setFullData(response.data);
     } catch (error) {
       console.error('Error en la solicitud:', error);
     }
@@ -81,21 +99,21 @@ export default function UsuariosRegistrados() {
 
   return (
     <>
-      <h5 className='mt-4 mb-5 font-semibold text-xl md:text-4xl'>USUARIOS REGISTRADOS</h5>
+      <h5 className='mt-4 mb-5 font-semibold text-xl md:text-4xl text-white'>MIEMBROS REGISTRADOS</h5>
       
       <div className="mb-4 flex justify-between md:w-[1200px]">
         <Select
-          value={pageSize}
-          onChange={(value) => setPageSize(value)}
+          value={pagination.pageSize}
+          onChange={(value) => setPagination({ ...pagination, pageSize: value })}
           options={[
             { value: 10, label: '10' },
             { value: 25, label: '25' },
             { value: 50, label: '50' },
             { value: 100, label: '100' },
           ]}
-          style={{ width: 80 }}
+          style={{ width :80 }}
         />
-        <BotonExcel fullData = {fullData}  bandera ={bandera}/>
+        <BotonExcel fullData={fullData} bandera={bandera}/>
       </div>
       
       <Table
@@ -105,7 +123,9 @@ export default function UsuariosRegistrados() {
         rowKey="dni"
         scroll={{ x: 1000 }}
         pagination={{
-          pageSize: pageSize, // Tamaño de página actual basado en el `Select`
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize })
         }}
       />
     </>
