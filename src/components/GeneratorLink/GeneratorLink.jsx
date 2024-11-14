@@ -58,7 +58,7 @@ let baseUrl = objetoUrl.origin;
 
   return (
     <ConfigProvider locale={esES}>
-        <h5 className='mt-4 mb-5 font-semibold text-xl md:text-4xl'>CREADOR DE EVENTOS</h5>
+        <h5 className='mt-4 mb-5 font-semibold text-xl md:text-4xl text-white'>CREADOR DE EVENTOS</h5>
         <Form
           className='border border-[#f5f5f5] p-6 rounded-2xl border-dashed ' 
           form={form}

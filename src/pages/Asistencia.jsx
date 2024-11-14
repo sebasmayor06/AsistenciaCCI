@@ -82,22 +82,12 @@ export default function Asistencia() {
     
     const eventDate = moment.utc(response.data.event_date); 
 
-    console.log(eventDate);
-    
-
-
     const dayInEnglish = eventDate.format('dddd'); 
     const monthInEnglish = eventDate.format('MMMM'); 
   
     const dayInSpanish = translateDayToSpanish(dayInEnglish);
     const monthInSpanish = translateMonthToSpanish(monthInEnglish);
 
-console.log(dayInSpanish);
-console.log(monthInSpanish);
-console.log(eventDate.date());
-
-
-  
     const formattedDate = `${dayInSpanish} ${eventDate.date()} de ${monthInSpanish} del ${eventDate.year()}`;
   
     setFecha(formattedDate)
@@ -107,7 +97,7 @@ console.log(eventDate.date());
   return (
     <div className='bg-[#f5f5f5] w-screen min-h-screen flex justify-center items-center flex-col' > 
         
-        <h5 className='font-bold text-[#1d1d1d] text-center text-2xl m-10'>INSCRIPCION SERVICIO DE AVIVAMIENTO FAMILIAR - {fecha}</h5>
+        <h5 className='font-bold text-[#1d1d1d] text-center text-2xl m-10'>INSCRIPCIÓN SERVICIO DE AVIVAMIENTO FAMILIAR - {fecha}</h5>
         <div className="font-semibold w-[350px] md:w-[800px] text-[#1d1d1d] mb-6">
           <p className="mb-4">¡Somos los Pastores Jonathan y Carolina y de parte de la iglesia Centro Cristiano Internacional te damos la bienvenida.</p>
           <p className="mb-4">Este es el link de inscripción para que te puedas inscribir junto con tus familiares y amigos.

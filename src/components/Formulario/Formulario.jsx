@@ -158,10 +158,11 @@ const Formulario = (event_id) => {
       onFinish={handleSubmit}
     >
       
-      <Form.Item name="dni" className='white-label' label="Numero Cedula:" rules={[{ required: true, message: 'Por favor ingresa tu número de cédula.' }]} >
+      <Form.Item name="dni" className='white-label' label="Documento de identificación:" rules={[{ required: true, message: 'Por favor ingresa tu número de cédula.' }]} >
+        <small className='text-slate-400'>CC para adultos o Tarjeta de identidad para niños.</small>
       <Input onBlur={handleBlur} disabled={dataConsul} autoComplete='tel'/>
       </Form.Item>
-      <Form.Item name="full_name" className='white-label' label="Nombre y apellido 📝:" rules={[{ required: true, message: 'Por favor ingresa tu nomnbre completo.' }]}>
+      <Form.Item name="full_name" className='white-label' label="Nombres y apellidos 📝:" rules={[{ required: true, message: 'Por favor ingresa tu nomnbre completo.' }]}>
         <Input  disabled={dataConsul} autoComplete="name"/>
       </Form.Item>
       <Form.Item name="estado_civil" className='white-label' label="Estado civil:" rules={[{ required: true, message: 'Por favor selecciona tu estado civil.' }]}>

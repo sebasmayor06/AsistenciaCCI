@@ -88,14 +88,16 @@ export default function BotonExcel({ fullData, bandera }) {
                 {
                     A: "ID",
                     B: "NOMBRE COMPLETO",
-                    C: "FECHA NACIMIENTO"
+                    C: "EDAD",
+                    D: "FECHA NACIMIENTO"
                 }
             ];
             fullData.forEach((data, index) => {
                 tabla.push({
                     A: index + 1, 
                     B: data.full_name,
-                    C: moment(data.fecha_de_nacimiento).format('YYYY-MM-DD')
+                    C: moment().diff(moment(data.fecha_de_nacimiento),'years'),
+                    D: moment(data.fecha_de_nacimiento).format('YYYY-MM-DD')
                 });
             });
         }
