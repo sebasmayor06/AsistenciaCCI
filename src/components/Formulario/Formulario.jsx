@@ -96,8 +96,8 @@ const Formulario = (event_id) => {
     }
   };
   const handleSubmit = async () => {
-    const {dni, full_name, estado_civil, phone_number, fecha_de_nacimiento, ciudad, barrio, direccion, bautizo } = form.getFieldValue()
-    const formData = {dni, full_name, estado_civil, phone_number, fecha_de_nacimiento, ciudad, barrio, direccion, bautizo};
+    const {dni, full_name, estado_civil, phone_number, fecha_de_nacimiento, ciudad, barrio, direccion, bautizo  } = form.getFieldValue()
+    const formData = {dni, full_name, estado_civil, phone_number, fecha_de_nacimiento, ciudad, barrio, direccion, bautizo, registration_time: moment().format('YYYY-MM-DD HH:mm:ss')};
     const formData2 = {
       dni: formData.dni,
       event_id: event_id.eventId,
@@ -159,7 +159,7 @@ const Formulario = (event_id) => {
     >
       
       <Form.Item name="dni" className='white-label' label="Documento de identificación:" rules={[{ required: true, message: 'Por favor ingresa tu número de cédula.' }]} >
-        <small className='text-slate-400'>CC para adultos o Tarjeta de identidad para niños.</small>
+        {/* <small className='text-slate-400'>CC para adultos o Tarjeta de identidad para niños.</small> */}
       <Input onBlur={handleBlur} disabled={dataConsul} autoComplete='tel'/>
       </Form.Item>
       <Form.Item name="full_name" className='white-label' label="Nombres y apellidos 📝:" rules={[{ required: true, message: 'Por favor ingresa tu nomnbre completo.' }]}>
