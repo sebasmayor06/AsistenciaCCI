@@ -35,15 +35,7 @@ export default function UsuariosRegistrados() {
       title: 'Nombre',
       dataIndex: 'full_name',
       key: 'full_name',
-      render: text => <a>{text}</a>,
-      filterDropdown: () => (
-        <Input
-          placeholder="Buscar por nombre"
-          value={searchText}
-          onChange={e => handleSearch(e.target.value)}
-          onPressEnter={() => handleSearch(searchText)}
-        />
-      ),
+      render: text => <a>{text}</a>
     },
     { title: 'Estado Civil', dataIndex: 'estado_civil', key: 'estado_civil', 
       render: (text) => {
@@ -92,6 +84,7 @@ export default function UsuariosRegistrados() {
       console.error('Error en la solicitud:', error);
     }
   };
+  
 
   useEffect(() => {
     handleConsultarReg();
@@ -112,6 +105,13 @@ export default function UsuariosRegistrados() {
             { value: 100, label: '100' },
           ]}
           style={{ width :80 }}
+        />
+
+        <Input
+          placeholder="Buscar por nombre"
+          value={searchText}
+          onChange={e => handleSearch(e.target.value)}
+          className="mb-4 mt-4 w-80"
         />
         <BotonExcel fullData={fullData} bandera={bandera}/>
       </div>

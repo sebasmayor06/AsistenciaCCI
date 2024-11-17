@@ -53,6 +53,7 @@ const ConfirmarAsist = () => {
       key: 'index', 
       render: (text, record, index) => (pagination.current - 1) * pagination.pageSize + index + 1
     },
+    { title: 'DNI', dataIndex: 'dni', key: 'dni' },
     { title: 'Nombre', dataIndex: 'full_name', key: 'full_name' },
     { title: 'Numero Teléfonico', dataIndex: 'phone_number', key: 'phone_number' },
     {
@@ -81,7 +82,6 @@ const ConfirmarAsist = () => {
     },
     { title: 'Ciudad', dataIndex: 'ciudad', key: 'ciudad' },
     { title: 'Barrio', dataIndex: 'barrio', key: 'barrio' },
-    { title: 'Fecha del Evento', dataIndex: 'event_date', key: 'event_date', render: date => moment.utc(date).format('YYYY-MM-DD') },
     {
       title: 'Asiste por 1ra vez',
       dataIndex: 'nuevo',
@@ -89,6 +89,8 @@ const ConfirmarAsist = () => {
       render: nuevo => nuevo ? 'Sí' : 'No'
     },
     { title: 'Quien te invito', dataIndex: 'nombreinv', key: 'nombreinv' },
+    { title: 'Fecha de Registro', dataIndex: 'registration_time', key: 'registration_time', render: date => moment.utc(date).format('YYYY-MM-DD') },
+    { title: 'Hora de Registro', dataIndex: 'registration_time', key: 'registration_time', render: date => moment.utc(date).format('HH:mm') },
     {
       title: 'Asistió',
       dataIndex: 'attended',
