@@ -33,6 +33,7 @@ const Formulario = (event_id) => {
   }
 
   }, [dataConsul.dni])
+  
 
   const handleConsultarAsistenciaGet = async (event_id) => {
     try {
@@ -106,7 +107,7 @@ const Formulario = (event_id) => {
       attended: false,
       peticion: form.getFieldValue().peticion,
       aporte: form.getFieldValue().aporte, 
-      nuevo: form.getFieldValue().nuevo, 
+      nuevo: dataConsul ? false : true, 
       nombreinv: form.getFieldValue().nombreinv
     };
     
@@ -158,7 +159,7 @@ const Formulario = (event_id) => {
       onFinish={handleSubmit}
     >
       
-      <Form.Item name="dni" className='white-label' label="Documento de identificación:" rules={[{ required: true, message: 'Por favor ingresa tu número de cédula.' }]} >
+      <Form.Item name="dni" className='white-label' label="Documento de identificación:" rules={[{ required: true, message: 'Por favor ingresa tu Documento de identificación.' }, { pattern: /^[0-9]+$/, message: 'No se permiten: puntos, comas, espacios, ni caracteres especiales' }]} >
         {/* <small className='text-slate-400'>CC para adultos o Tarjeta de identidad para niños.</small> */}
       <Input onBlur={handleBlur} disabled={dataConsul} autoComplete='tel'/>
       </Form.Item>
@@ -228,17 +229,9 @@ const Formulario = (event_id) => {
           <Form.Item name="peticion"  className='white-label' label="¿Tienes alguna petición de oración? 🙏" > 
             <Input />
           </Form.Item>
-          {/* <Form.Item name="nuevo" className='white-label' label="¿Asistes por primera vez a nuestra iglesia?" rules={[{ required: true, message: 'Por favor selecciona al menos una respuesta.' }]}> 
-                <Radio.Group onChange={handleRadioChange}>
-                  <Radio className='text-[#1d1d1d] text-xs md:text-xl mb-2' value={1}>SI</Radio>
-                  <Radio className='text-[#1d1d1d] text-xs md:text-xl mb-2' value={0}>NO</Radio>
-                </Radio.Group>
-          </Form.Item> */}
           {dataConsul === '' && (
              <>
-             <Form.Item name="nuevo" className='white-label hidden' label="Nombre de la persona que te invitó">
-               <Input />
-             </Form.Item>
+             
              <Form.Item name="nombreinv" className='white-label' label="Nombre de la persona que te invitó">
                <Input />
              </Form.Item>
