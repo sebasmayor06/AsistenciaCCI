@@ -21,29 +21,35 @@ export default function BotonExcel({ fullData, bandera }) {
             titulo = [{ A: "Reporte de Asistencias" }, []];
             sheetName = "Asistencia";
             fileName = "ReporteDeAsistencia.xlsx";
-            columnWidths = [5, 35, 25, 20, 25, 25, 25, 25];
+            columnWidths = [5, 25, 35, 20, 25, 25, 25, 25, 25, 25, 25];
             tabla = [
                 {
                     A: "ID",
-                    B: "NOMBRE COMPLETO",
-                    C: "NUMERO TELEFONICO",
-                    D: "CIUDAD",
-                    E: "BARRIO",
-                    F: "ASISTE PRIMERA VEZ",
-                    G: "QUIEN TE INVITO",
-                    H: "ASISTIO"
+                    B: "DNI",
+                    C: "NOMBRE COMPLETO",
+                    D: "NUMERO TELEFONICO",
+                    E: "CIUDAD",
+                    F: "BARRIO",
+                    G: "ASISTE PRIMERA VEZ",
+                    H: "QUIEN TE INVITO",
+                    I: "ASISTIO",
+                    J: "FECHA DE REGISTRO",
+                    K: "HORA DE REGISTRO"
                 }
             ];
             fullData.forEach((data, index) => {
                 tabla.push({
-                    A: index + 1, 
-                    B: data.full_name,
-                    C: data.phone_number,
-                    D: data.ciudad,
-                    E: data.barrio,
-                    F: data.nuevo ? "Sí" : "No",
-                    G: data.nombreinv,
-                    H: data.attended ? "Sí" : "No",
+                    A: index + 1,
+                    B: data.dni,
+                    C: data.full_name,
+                    D: data.phone_number,
+                    E: data.ciudad,
+                    F: data.barrio,
+                    G: data.nuevo ? "Sí" : "No",
+                    H: data.nombreinv,
+                    I: data.attended ? "Sí" : "No",
+                    J: moment(data.registration_time).format('YYYY-MM-DD'),
+                    K: moment(data.registration_time).format('HH:mm')
                 });
             });
         } else if (bandera === 'usuRegister') {
