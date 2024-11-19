@@ -66,6 +66,7 @@ export default function Asistencia() {
   const apiUrl = import.meta.env.VITE_URL;
 
   const [fecha, setFecha] = useState('')
+  const [event, setEvent] = useState('')
 
     const { eventId } = useParams();
 
@@ -81,6 +82,7 @@ export default function Asistencia() {
     });
     
     const eventDate = moment.utc(response.data.event_date); 
+    setEvent(response.data)
 
     const dayInEnglish = eventDate.format('dddd'); 
     const monthInEnglish = eventDate.format('MMMM'); 
@@ -94,10 +96,11 @@ export default function Asistencia() {
     
           
     }
+    
   return (
     <div className='bg-[#f5f5f5] w-screen min-h-screen flex justify-center items-center flex-col' > 
         
-        <h5 className='font-bold text-[#1d1d1d] text-center text-2xl m-10'>INSCRIPCIÓN SERVICIO DE AVIVAMIENTO FAMILIAR - {fecha}</h5>
+        <h5 className='font-bold text-[#1d1d1d] text-center text-2xl m-10'>INSCRIPCIÓN {event.event_name} - {fecha}</h5>
         <div className="font-semibold w-[350px] md:w-[800px] text-[#1d1d1d] mb-6">
           <p className="mb-4">¡Somos los Pastores Jonathan y Carolina y de parte de la iglesia Centro Cristiano Internacional te damos la bienvenida.</p>
           <p className="mb-4">Este es el link de inscripción para que te puedas inscribir junto con tus familiares y amigos.
@@ -122,10 +125,10 @@ export default function Asistencia() {
 
 
         
-        <img className="h-[640'x] w-[550px] mb-10" src="/img/bg-image.jpg" alt="fotoPastores" />
+        {event.id_eventos_cci === 5 ? <img className="h-[640'x] w-[550px] mb-10 rounded-2xl" src="/img/eventoArturo.jpg" alt="arturo" /> :<img className="h-[640'x] w-[550px] mb-10" src="/img/bg-image.jpg" alt="fotoPastores" />}
 
       <MyCarousel/>
-      <Formulario eventId={eventId}/>
+      <Formulario eventId={eventId} event={event}/>
       </div>
   )
 }
