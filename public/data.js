@@ -30,6 +30,13 @@ const data = {
       {"value": "timbio", "label": "Timbio"},
       {"value": "miranda", "label": "Miranda"},
       {"value": "otra", "label": "Otra"}
+    ],
+    "eventos" :[
+      {"value": "1", "label": "SAF"},
+      {"value": "2", "label": "CAF"},
+      {"value": "3", "label": "POZO"},
+      {"value": "4", "label": "VIGILIA"},
+      {"value": "5", "label": "EVENTO ESPECIAL"},
     ]
   };
   

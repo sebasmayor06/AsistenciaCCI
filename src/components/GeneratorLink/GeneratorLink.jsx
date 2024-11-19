@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import moment from 'moment';
 import 'moment/locale/es';
 import axios from 'axios';
@@ -26,6 +26,9 @@ let baseUrl = objetoUrl.origin;
 
   const [form] = Form.useForm();
   const [link, setLink] = useState('')
+  const [eventCci, setEventCci] = useState([])
+  const [selectedEvent, setSelectedEvent] = useState({ id: null, name: '' });
+
 
   const {Option} = Select
 
@@ -38,9 +41,12 @@ let baseUrl = objetoUrl.origin;
         const fechaFormateada = moment(fechaEvento.$d).format('YYYY-MM-DD');
         const formData2 = {
             event_date : fechaFormateada,
-            event_name : formData.event_name,
-            location : formData.location
+            event_name : selectedEvent.id === 5 ? formData.event_name : selectedEvent.name,
+            location : formData.location,
+            id_eventos_cci : selectedEvent.id
         }
+        console.log({formData2});
+        
         const response = await axios.post(`${apiUrl}/registerEvent`, formData2, {
             headers: {
               'Content-Type': 'application/json'
@@ -56,11 +62,40 @@ let baseUrl = objetoUrl.origin;
     }
   };
 
+  useEffect(()=>{
+    handleEvent()
+  }, [])
+
+  const handleEvent = async () => {
+    try {
+      const response = await axios.get(`${apiUrl}/consultarEventCCI`,{
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      setEventCci(response.data)
+      
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
+   
+
+  }
+
+  const handleEventChange = (value) => {
+    const selectedOption = eventCci.find(option => option.id === value);
+    setSelectedEvent({
+      id: selectedOption.id,
+      name: selectedOption.nombre
+    });
+  };
+
   return (
     <ConfigProvider locale={esES}>
         <h5 className='mt-4 mb-5 font-semibold text-xl md:text-4xl text-white'>CREADOR DE EVENTOS</h5>
         <Form
-          className='border border-[#f5f5f5] p-6 rounded-2xl border-dashed ' 
+          className='border border-[#f5f5f5] p-6 rounded-2xl border-dashed md:w-80' 
           form={form}
           layout="vertical"
           initialValues={{}}
@@ -83,10 +118,26 @@ let baseUrl = objetoUrl.origin;
                 }
             </Select>
             </Form.Item>
-            <Form.Item name="event_name" className='white-label2' label="Nombre del evento 📝:">
-                <Input  />
+            <Form.Item name="event_cci" className='white-label2' label="Evento:">
+            <Select
+                onChange={handleEventChange}
+                value={selectedEvent.id}
+              >
+                {
+                    eventCci.map((option, index) => {
+                    return  <Option key={index} value={option.id}>{option.nombre}</Option>
+                    })
+
+                }
+            </Select>
             </Form.Item>
-          <Form.Item>
+            { selectedEvent.id === 5 ? 
+              <Form.Item name="event_name" className='white-label2' label="Nombre del evento especial:">
+                <Input></Input>
+              </Form.Item>:
+              ''
+            }
+          <Form.Item >
             <Button type="primary" htmlType="submit">GENERAR</Button>
           </Form.Item>
         </Form>
