@@ -18,13 +18,13 @@ const Formulario = (event_id) => {
   const apiUrl = import.meta.env.VITE_URL;
 
   const [form] = Form.useForm();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   // const [requiredMark, setRequiredMarkType] = useState('optional');
   // const onRequiredTypeChange = ({ requiredMarkValue }) => {
   //   setRequiredMarkType(requiredMarkValue);
   // };
   const [asistePorPrimeraVez, setAsistePorPrimeraVez] = useState(null);
   const [dataConsul, setDataConsul] = useState('');
-
 
   useEffect(()=>{
 
@@ -87,9 +87,9 @@ const Formulario = (event_id) => {
       const dataWithMoment = {
         ...response.data,
         nuevo: dataConsul === '' ? 0 : 1,
-        fecha_de_nacimiento: response.data.fecha_de_nacimiento ? moment(response.data.fecha_de_nacimiento) : null,
+        fecha_de_nacimiento: response.data.fecha_de_nacimiento ? moment.utc(response.data.fecha_de_nacimiento) : null,
       };
-  
+
       setDataConsul(response.data);
       form.setFieldsValue(dataWithMoment);
     } catch (error) {
@@ -97,6 +97,7 @@ const Formulario = (event_id) => {
     }
   };
   const handleSubmit = async () => {
+    setIsSubmitting(true);
     const {dni, full_name, estado_civil, phone_number, fecha_de_nacimiento, ciudad, barrio, direccion, bautizo  } = form.getFieldValue()
     const formData = {dni, full_name, estado_civil, phone_number, fecha_de_nacimiento, ciudad, barrio, direccion, bautizo, registration_time: moment().format('YYYY-MM-DD HH:mm:ss')};
     const formData2 = {
@@ -119,6 +120,17 @@ const Formulario = (event_id) => {
             'Content-Type': 'application/json'
           }
         });
+
+        notification.open({
+          message: 'REGISTRO EXITOSO!!!',
+          description: ``,
+          type: 'success', // Puedes cambiar el tipo a 'success', 'error', o 'warning' según sea necesario
+          style: {
+            backgroundColor: '#fff3cd', // Cambia el color de fondo
+            border: '1px solid #ffeeba', // Cambia el borde
+            color: '#856404', // Cambia el color del texto
+          }
+        });
       }
 
       const response2 = await axios.post(`${apiUrl}/resgisterAsistencia`, formData2, {
@@ -126,14 +138,32 @@ const Formulario = (event_id) => {
           'Content-Type': 'application/json'
         }
       });
+      if (response2 && dataConsul !== '') {
+        
+        notification.open({
+          message: 'ASISTENCIA FIRMADA CON EXITO!!!',
+          description: ``,
+          type: 'success', // Puedes cambiar el tipo a 'success', 'error', o 'warning' según sea necesario
+          style: {
+            backgroundColor: '#fff3cd', // Cambia el color de fondo
+            border: '1px solid #ffeeba', // Cambia el borde
+            color: '#856404', // Cambia el color del texto
+          }
+        });
+      }
+
       if ( response2.status === 200) {
-        window.location.reload();
+        setTimeout(() => {
+          
+          window.location.reload();
+          setIsSubmitting(false); 
+        }, 2000);
       } else {
         console.error('Error en la solicitud:', response2.status);
       }
     } catch (error) {
       console.error('Error en la solicitud:', error);
-    }
+  }
     
   };
 
@@ -167,7 +197,7 @@ const Formulario = (event_id) => {
         <Input  disabled={dataConsul} autoComplete="name"/>
       </Form.Item>
       <Form.Item name="estado_civil" className='white-label' label="Estado civil:" rules={[{ required: true, message: 'Por favor selecciona tu estado civil.' }]}>
-          <Select>
+          <Select disabled={dataConsul}>
           {
             data.options.map((option, index) => {
               return  <Option key={index} value={option.value}>{option.label}</Option>
@@ -176,9 +206,33 @@ const Formulario = (event_id) => {
           }
           </Select>
         </Form.Item>
-      <Form.Item name="phone_number"  className='white-label' label="Numero Telefónico 📱📞☎️" rules={[{ required: true, message: 'Por favor ingresa tu numero telefónico.' }]}>
-        <Input/>
-      </Form.Item>
+        <Form.Item
+  name="phone_number"
+  className="white-label"
+  label="Número Telefónico 📱📞☎️"
+  rules={[
+    { 
+      required: true, 
+      message: 'Por favor ingresa tu número telefónico SIN indicador +57, ni caracteres especiales.' 
+    },
+    ...(dataConsul 
+      ? []
+      : [{
+          pattern: /^[0-9]{10}$/,
+          message: 'El número telefónico debe tener exactamente 10 dígitos.',
+        }]
+    ),
+  ]}
+>
+  <Input
+    disabled={dataConsul}
+    onInput={(e) => {
+      if (!dataConsul) {
+        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+      }
+    }}
+  />
+</Form.Item>
       <Form.Item
             className="white-label md:w-96"
             label="Fecha de nacimiento"
@@ -188,7 +242,7 @@ const Formulario = (event_id) => {
             <DatePicker disabled={dataConsul}/>
           </Form.Item>
       <Form.Item name="ciudad" className='white-label' label="¿Desde qué ciudad nos visitas?🚗✈️🚲🛵🚌" rules={[{ required: true, message: 'Por favor selecciona la ciudad de donde nos visitas.' }]} >
-        <Select>
+        <Select disabled={dataConsul}>
           {
             data.locations.map((option, index) => {
               return  <Option key={index} value={option.value}>{option.label}</Option>
@@ -199,13 +253,13 @@ const Formulario = (event_id) => {
         </Select>
       </Form.Item>
       <Form.Item name="barrio" className='white-label' label="¿En que barrio vives?  🏘️🏘️"  rules={[{ required: true, message: 'Por favor ingresa el barrio donde vives.' }]}>
-        <Input />
+        <Input disabled={dataConsul}/>
       </Form.Item>
       <Form.Item name="direccion" className='white-label' label="La dirección de tu casa 🏠🏠es: " rules={[{ required: true, message: 'Por favor ingresa la dirección donde vives.' }]}> 
-        <Input  />
+        <Input disabled={dataConsul} />
       </Form.Item>
       <Form.Item name="bautizo" className='white-label' label="¿Eres bautizado(a)?😃" rules={[{ required: true, message: 'Por favor selecciona al menos una respuesta' }]}>
-      <Radio.Group className='flex flex-col'>
+      <Radio.Group className='flex flex-col' disabled={dataConsul}>
         <Radio className='text-[#1d1d1d] text-xs md:text-xl mb-2' value={1}>Sí</Radio>
         <Radio className='text-[#1d1d1d] text-xs md:text-xl mb-2' value={2}>No</Radio>
         <Radio className='text-[#1d1d1d] text-xs md:text-xl mb-2' value={3}>Aun no pero quiero bautizarme, quiero agradar al Señor!!!</Radio>
@@ -237,8 +291,10 @@ const Formulario = (event_id) => {
              </Form.Item>
            </>
           )}
-          <Form.Item >
-            <Button type="primary" htmlType="submit">ENVIAR</Button>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Enviando...' : 'ENVIAR'}
+            </Button>
           </Form.Item>
    
     </Form>

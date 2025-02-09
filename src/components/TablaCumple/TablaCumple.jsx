@@ -81,7 +81,7 @@ export default function TablaCumple() {
   return (
     <>
       <h5 className='mt-4 mb-5 font-semibold text-xl md:text-4xl text-white'>CUMPLEAÑOS</h5>
-      <div className="flex gap-2 mb-4">
+      <div className="flex flex-col md:flex-row gap-2 mb-4">
         <Select
           placeholder="Selecciona un mes"
           onChange={handleMonthChange}
@@ -100,11 +100,11 @@ export default function TablaCumple() {
           style={{ width: 200 }}
         />
       </div>
-      <div className=' flex justify-between md:w-[1200px]'>
+      <div className=' flex justify-between md:w-[1200px] gap-2'>
         <Select
           value={pagination.pageSize}
           onChange={(value) => setPagination({ ...pagination, pageSize: value })}
-          options={[10, 25, 50, 100].map(size => ({ value: size, label: `${size}` }))}
+          options={[10, 25, 50, 100, 200].map(size => ({ value: size, label: `${size}` }))}
           style={{ width: 100 }}
         />
         <BotonExcel fullData={fullData} bandera={bandera}/>
