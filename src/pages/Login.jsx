@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,12 +7,16 @@ const users = [
   { username: 'user', password: '123456' }
 ];
 
-export default function Login() {
+export default function Login({setLogin}) {
     const navigate = useNavigate();
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    setLogin(false);
+  }, [userName, password]);
 
   const validandoDatos = (values) => {
     const { username, password } = values; // Capturamos los valores del formulario
@@ -24,10 +28,12 @@ export default function Login() {
       setUserName(userName);
       if (user.username === 'admin') {
         navigate('/Admin'); // Redirige a /Admin si el usuario es admin
+        setLogin(true);
       } else {
-        navigate('/ConfirmarAsist'); // Redirige a /ConfirmarAsist si es otro usuario
+        navigate('/User'); // Redirige a /ConfirmarAsist si es otro usuario
       }
     } else {
+      setLogin(false);
       setError(true);
       setErrorMessage('Usuario o contraseña incorrecta');
     }
@@ -35,40 +41,44 @@ export default function Login() {
 
   return (
     <div className='bg-[#1d1d1d] w-screen min-h-screen flex justify-center items-center flex-col'>
+        <div className='w-28 rounded-full h-28 flex justify-center items-center bg-slate-50 mb-6'>
+             <img src="../../img/logo.png" alt="logo" className='w-22 h-12 mb-2' />
+        </div>
         <div className='w-80 h-80 bg-white rounded flex flex-col justify-center items-center'>
 
-      <Form
-        name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
-        initialValues={{ remember: true }}
-        onFinish={validandoDatos} // onFinish ya pasa los valores correctamente
-        autoComplete="off"
-      >
-        <Form.Item
-          label="Username"
-          name="username"
-          rules={[{ required: true, message: 'Por favor, ingrese su usuario!' }]}
-        >
-          <Input onChange={(e) => setUserName(e.target.value)} />
-        </Form.Item>
+          <Form
+            name="basic"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 600 }}
+            initialValues={{ remember: true }}
+            onFinish={validandoDatos} // onFinish ya pasa los valores correctamente
+            autoComplete="off"
+            className='p-14 sm:p-0' 
+          >
+            <Form.Item
+              label="Username"
+              name="username"
+              rules={[{ required: true, message: 'Por favor, ingrese su usuario!' }]}
+            >
+              <Input onChange={(e) => setUserName(e.target.value)} />
+            </Form.Item>
 
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[{ required: true, message: 'Por favor, ingrese su contraseña!' }]}
-        >
-          <Input.Password onChange={(e) => setPassword(e.target.value)} />
-        </Form.Item>
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={[{ required: true, message: 'Por favor, ingrese su contraseña!' }]}
+            >
+              <Input.Password onChange={(e) => setPassword(e.target.value)} />
+            </Form.Item>
 
 
-        <Form.Item label={null}>
-          <Button type="primary" htmlType="submit">
-            Iniciar sesión
-          </Button>
-        </Form.Item>
-      </Form>
+            <Form.Item label={null}>
+              <Button type="primary" htmlType="submit">
+                Iniciar sesión
+              </Button>
+            </Form.Item>
+          </Form>
         {error && <p style={{ color: 'red' }}>{errorMessage}</p>}
         </div>
     </div>

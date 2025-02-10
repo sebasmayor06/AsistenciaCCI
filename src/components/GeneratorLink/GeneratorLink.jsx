@@ -45,8 +45,6 @@ let baseUrl = objetoUrl.origin;
             location : formData.location,
             id_eventos_cci : selectedEvent.id
         }
-        console.log({formData2});
-        
         const response = await axios.post(`${apiUrl}/registerEvent`, formData2, {
             headers: {
               'Content-Type': 'application/json'

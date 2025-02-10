@@ -4,38 +4,73 @@ import React from 'react';
 // import { Link } from 'react-router-dom';  // Importa Link para la navegación
 import './Navbar.css';  // Importa un archivo de estilos CSS si es necesario
 import { Menu } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
-function Navbar() {
+function Navbar({ setActivo,isInline = false, setopenMenu, bandera2}) {
+  
+  const navigate = useNavigate();
   return (
-    // <nav className="navbar flex flex-row justify-center items-center">
-    //     <img src="../../img/logo.png" alt="logo" className='w-44 h-24' />
-    //   <ul className="navbar-nav">
-    //     <li className="nav-item">
-    //       <Link to="/" className="nav-link">Inicio</Link>
-    //     </li>
-    //     <li className="nav-item">
-    //       <Link to="/about" className="nav-link">Acerca de</Link>
-    //     </li>
-    //     <li className="nav-item">
-    //       <Link to="/services" className="nav-link">Servicios</Link>
-    //     </li>
-    //     <li className="nav-item">
-    //       <Link to="/contact" className="nav-link">Contacto</Link>
-    //     </li>
-    //   </ul>
-    // </nav>
+   
     <div>
-      <Menu 
-      mode='horizontal'
-      items = {[
-        { key: '1', label: 'Generar Link' },
-        { key: '2', label: 'Eventos Creados' },
-        { key: '3', label: 'Miembros registrados' },
-        { key: '4', label: 'Asistencia' },
-        { key: '5', label: 'Tabla Cumpleaños' },
-      ]}>
-
-      </Menu>
+      
+     {bandera2 === 'admin' ? <Menu
+        style={{ backgroundColor: '#f1f1f1' }}
+        mode={isInline ? "inline" : 'horizontal'}
+        onClick={(e) => {
+          switch (e.key) {
+            case '1': setActivo('link'); break;
+            case '2': setActivo('eventos'); break;
+            case '3': setActivo('usuarios'); break;
+            case '4': setActivo('asistencia'); break;
+            case '5': setActivo('cumple'); break;
+            case '6': setActivo('gestion'); break;
+            case '7': setActivo('cerrar'); break;
+            default: setActivo('link');
+          }
+          if (setopenMenu) setopenMenu(false); 
+        }}
+        items={[
+          {
+            key: 'logo',
+            label: (
+             <img src="../../img/logo.png" alt="logo" className='w-22 h-12 mb-3 mr-80' />
+            ),
+            disabled: true, // Hace que el logo no sea clickeable
+          },
+          { key: '1', label: 'Generar Link' },
+          { key: '2', label: 'Eventos Creados' },
+          { key: '3', label: 'Miembros registrados' },
+          { key: '4', label: 'Asistencia' },
+          { key: '5', label: 'Tabla Cumpleaños' },
+          { key: '6', label: 'Gestión interna' },
+          { key: '7', label: (<button className='lg:ml-36 lg:mt-3 bg-slate-500 flex justify-center items-center text-slate-100 w-32 h-10' onClick={() => {navigate('/Login')}}>Cerrar Sesión</button>) },
+        ]}
+      /> : 
+      <Menu
+        style={{ backgroundColor: '#f1f1f1' }}
+        mode={isInline ? "inline" : 'horizontal'}
+        onClick={(e) => {
+          switch (e.key) {
+            case '1': setActivo('asistencia'); break;
+            case '2': setActivo('usuarios'); break;
+            case '3': setActivo('cerrar'); break;
+            default: setActivo('asistencia');
+          }
+          if (setopenMenu) setopenMenu(false); 
+        }}
+        items={[
+          {
+            key: 'logo',
+            label: (
+             <img src="../../img/logo.png" alt="logo" className='w-22 h-12 mb-3 mr-[500px]' />
+            ),
+            disabled: true, // Hace que el logo no sea clickeable
+          },
+          { key: '1', label: (<span className=''>Asistencia</span>) },
+          { key: '2', label: 'Miembros registrados' },
+          { key: '3', label: (<button className='lg:ml-[450px] lg:mt-3 bg-slate-500 flex justify-center items-center text-slate-100 w-32 h-10' onClick={() => {navigate('/Login')}}>Cerrar Sesión</button>)},
+        ]}
+      />}
     </div>
   );
 }

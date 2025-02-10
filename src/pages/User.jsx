@@ -10,8 +10,8 @@ import { MenuOutlined } from "@ant-design/icons"
 import Navbar from "../components/Navbar/Navbar"
 import { Drawer } from "antd"
 import GestionInterna from '../components/GestionInterna/GestionInterna';
-export default function Admin() {
-  const [activo, setActivo] = useState('link');
+export default function User() {
+  const [activo, setActivo] = useState('asistencia');
   const [openMenu, setopenMenu] = useState(false)
 
   
@@ -23,7 +23,7 @@ export default function Admin() {
         <MenuOutlined style={{fontSize: 20 , paddingLeft: 12, paddingTop: 12}}/>
       </div>
       <span className="headerMenu">
-      <Navbar setActivo={setActivo} bandera2 = {'admin'}/>
+      <Navbar setActivo={setActivo} bandera2 = {'user'}/>
       </span>
       <Drawer 
       style={{backgroundColor: '#f1f1f1'}}
@@ -31,16 +31,11 @@ export default function Admin() {
           open = {openMenu}
           onClose={() => setopenMenu(false)}
           closable={false}>
-      <Navbar isInline setActivo={setActivo} setopenMenu={setopenMenu} bandera2 = {'admin'}/>
+      <Navbar isInline setActivo={setActivo} setopenMenu={setopenMenu} bandera2 = {'user'}/>
       </Drawer>
       </div>
-      {activo === 'link' && <GeneratorLink />}
-      {activo === 'eventos' && <EventosCreados />}
       {activo === 'usuarios' && <UsuariosRegistrados />}
       {activo === 'asistencia' && <ConfirmarAsist />}
-      {activo === 'gestion' && <GestionInterna/>}
-      {activo === 'cumple' && <TablaCumple />}
-
      
     </div>
     

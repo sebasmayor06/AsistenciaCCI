@@ -5,10 +5,11 @@ import 'moment/locale/es';
 import moment from 'moment';
 import axios from 'axios';
 import BotonExcel from '../components/BotonExcel/BotonExcel';
+import Navbar from '../components/Navbar/Navbar';
 
 moment.locale('es');
 
-const ConfirmarAsist = () => {
+const ConfirmarAsist = ({bandera1}) => {
   const apiUrl = import.meta.env.VITE_URL;
   const bandera = 'confAsist';
 
@@ -132,9 +133,12 @@ const ConfirmarAsist = () => {
     }
   };
 
+  // const bandera2 = 'user';
+
   return (
     <ConfigProvider locale={esES}>
       <div className="bg-[#1d1d1d] w-screen min-h-screen flex justify-start items-center flex-col">
+        {/* {bandera1 === 'admin' ? '' : <Navbar bandera2 = {bandera2}/>} */}
         <div className='contenedor flex sm:flex-row flex-col justify-center items-center'>
           <div className='w-40'>
 
