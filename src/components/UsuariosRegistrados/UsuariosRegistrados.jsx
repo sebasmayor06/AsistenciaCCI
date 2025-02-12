@@ -94,7 +94,7 @@ export default function UsuariosRegistrados() {
     <>
       <h5 className='mt-4 mb-5 font-semibold text-xl md:text-4xl text-white'>MIEMBROS REGISTRADOS</h5>
       
-      <div className="mb-4 flex justify-between md:w-[1200px]">
+      <div className="mb-4 flex flex-col md:flex-row justify-between md:w-[1200px]">
         <Select
           value={pagination.pageSize}
           onChange={(value) => setPagination({ ...pagination, pageSize: value })}
@@ -103,6 +103,7 @@ export default function UsuariosRegistrados() {
             { value: 25, label: '25' },
             { value: 50, label: '50' },
             { value: 100, label: '100' },
+            { value: 200, label: '200' },
           ]}
           style={{ width :80 }}
         />

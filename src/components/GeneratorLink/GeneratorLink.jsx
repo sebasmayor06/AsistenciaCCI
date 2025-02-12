@@ -45,8 +45,6 @@ let baseUrl = objetoUrl.origin;
             location : formData.location,
             id_eventos_cci : selectedEvent.id
         }
-        console.log({formData2});
-        
         const response = await axios.post(`${apiUrl}/registerEvent`, formData2, {
             headers: {
               'Content-Type': 'application/json'
@@ -95,7 +93,7 @@ let baseUrl = objetoUrl.origin;
     <ConfigProvider locale={esES}>
         <h5 className='mt-4 mb-5 font-semibold text-xl md:text-4xl text-white'>CREADOR DE EVENTOS</h5>
         <Form
-          className='border border-[#f5f5f5] p-6 rounded-2xl border-dashed md:w-80' 
+          className='border border-[#f5f5f5] p-6 rounded-2xl border-dashed w-80' 
           form={form}
           layout="vertical"
           initialValues={{}}

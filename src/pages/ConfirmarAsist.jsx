@@ -5,10 +5,11 @@ import 'moment/locale/es';
 import moment from 'moment';
 import axios from 'axios';
 import BotonExcel from '../components/BotonExcel/BotonExcel';
+import Navbar from '../components/Navbar/Navbar';
 
 moment.locale('es');
 
-const ConfirmarAsist = () => {
+const ConfirmarAsist = ({bandera1}) => {
   const apiUrl = import.meta.env.VITE_URL;
   const bandera = 'confAsist';
 
@@ -16,7 +17,9 @@ const ConfirmarAsist = () => {
   const [tableData, setTableData] = useState([]);
   const [fullData, setFullData] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 }); 
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+  const [acomuladorFir, setAcomuladorFir] = useState(0)
+  const [acomuladorAsist, setAcomuladorAsist] = useState(0)
 
   const handleAsistio = async (dni, newStatus, event_id) => {
     try {
@@ -35,6 +38,7 @@ const ConfirmarAsist = () => {
     }
   };
 
+
   const handleSearch = (value) => {
     setSearchText(value);
     filterData(value);
@@ -48,9 +52,9 @@ const ConfirmarAsist = () => {
   };
 
   const columns = [
-    { 
-      title: '#', 
-      key: 'index', 
+    {
+      title: '#',
+      key: 'index',
       render: (text, record, index) => (pagination.current - 1) * pagination.pageSize + index + 1
     },
     { title: 'DNI', dataIndex: 'dni', key: 'dni' },
@@ -116,6 +120,11 @@ const ConfirmarAsist = () => {
         });
         setTableData(response.data);
         setFullData(response.data);
+        setAcomuladorFir(response.data.length)
+        // setAcomuladorAsist(response.data.)
+        const filter = response.data.filter(asistio => asistio.attended)
+        setAcomuladorAsist(filter.length)
+
       } else {
         console.log('No se seleccionó una fecha');
       }
@@ -124,63 +133,89 @@ const ConfirmarAsist = () => {
     }
   };
 
+  // const bandera2 = 'user';
+
   return (
     <ConfigProvider locale={esES}>
       <div className="bg-[#1d1d1d] w-screen min-h-screen flex justify-start items-center flex-col">
-        <h5 className='mt-4 font-semibold text-xl md:text-4xl text-white'>CONFIRMACIÓN DE ASISTENCIA</h5>
-        <Form
-          className="border border-[#f5f5f5] p-6 rounded-2xl border-dashed flex justify-center items-center flex-col mt-10"
-          form={form}
-          layout="vertical"
-          initialValues={{}}
-          onFinish={handleSubmit}
-        >
-          <Form.Item
-            className="white-label2 md:w-96 flex flex-col justify-center items-center"
-            label="Fecha del evento"
-            name="fechaEvento"
-          >
-            <DatePicker />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">ENVIAR</Button>
-          </Form.Item>
-        </Form>
+        {/* {bandera1 === 'admin' ? '' : <Navbar bandera2 = {bandera2}/>} */}
+        <div className='contenedor flex sm:flex-row flex-col justify-center items-center'>
+          <div className='w-40'>
 
-        <Input
-          placeholder="Buscar por nombre"
-          value={searchText}
-          onChange={e => handleSearch(e.target.value)}
-          className="mb-4 mt-4 w-80"
-        />
+          </div>
+          <div className='contenedorForm flex flex-col justify-center items-center'>
+            <h5 className='mt-4 font-semibold text-xl md:text-4xl text-white'>CONFIRMACIÓN DE ASISTENCIA</h5>
+            <Form
+              className="border border-[#f5f5f5] p-6 rounded-2xl border-dashed flex justify-center items-center flex-col mt-10"
+              form={form}
+              layout="vertical"
+              initialValues={{}}
+              onFinish={handleSubmit}
+            >
+              <Form.Item
+                className="white-label2 md:w-96 flex flex-col justify-center items-center"
+                label="Fecha del evento"
+                name="fechaEvento"
+              >
+                <DatePicker />
+              </Form.Item>
+              <Form.Item>
+                <Button type="primary" htmlType="submit">ENVIAR</Button>
+              </Form.Item>
+            </Form>
 
-        <div className="flex flex-row justify-between md:w-[1200px] gap-4">
-          <Select
-            value={pagination.pageSize}
-            onChange={(value) => setPagination({ ...pagination, pageSize: value })}
-            options={[
-              { value: 10, label: '10' },
-              { value: 25, label: '25' },
-              { value: 50, label: '50' },
-              { value: 100, label: '100' },
-            ]}
-            style={{ width: 80 }}
-          />
-          <BotonExcel fullData={fullData} bandera={bandera} />
+            <Input
+              placeholder="Buscar por nombre"
+              value={searchText}
+              onChange={e => handleSearch(e.target.value)}
+              className="mb-4 mt-4 w-80"
+            />
+
+          </div>
+          <div className=' w-40 flex flex-col justify-center items-center'>
+            <div className="flex sm:flex-col flex-row items-center gap-20 md:gap-0">
+              <div className="md:mb-4 flex flex-col items-center">
+                <label htmlFor="acomuladorFir" className="block text-white mb-2">REGISTROS</label>
+                <Input id="acomuladorFir" className="w-20" value={acomuladorFir} />
+              </div>
+
+              <div className="md:mt-4 flex flex-col items-center">
+                <label htmlFor="acomuladorAsist" className="block text-white mb-2">ASISTENCIA</label>
+                <Input id="acomuladorAsist" className="w-20" value={acomuladorAsist} />
+              </div>
+            </div>
+          </div>
         </div>
 
-        <Table
-          className='mt-4 w-[1200px]'
-          columns={columns}
-          dataSource={tableData}
-          rowKey="dni"
-          scroll={{ x: 1000 }}
-          pagination={{
-            current: pagination.current,
-            pageSize: pagination.pageSize,
-            onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize }),
-          }}
-        />
+          <div className="flex flex-row justify-between md:w-[1200px] gap-4 mt-8">
+            <Select
+              value={pagination.pageSize}
+              onChange={(value) => setPagination({ ...pagination, pageSize: value })}
+              options={[
+                { value: 10, label: '10' },
+                { value: 25, label: '25' },
+                { value: 50, label: '50' },
+                { value: 100, label: '100' },
+                { value: 200, label: '200' },
+              ]}
+              style={{ width: 80 }}
+            />
+            <BotonExcel fullData={fullData} bandera={bandera} />
+          </div>
+
+          <Table
+            className='mt-4 w-[1200px]'
+            columns={columns}
+            dataSource={tableData}
+            rowKey="dni"
+            scroll={{ x: 1000 }}
+            pagination={{
+              current: pagination.current,
+              pageSize: pagination.pageSize,
+              onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize }),
+            }}
+          />
+
       </div>
     </ConfigProvider>
   );
