@@ -1,39 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../features/auth/authSlice';
 
 const users = [
   { username: 'admin', password: '123456' },
   { username: 'user', password: '123456' }
 ];
 
-export default function Login({setLogin}) {
+export default function Login() {
+  const dispatch = useDispatch();
+  const { isLoading, error, rol } = useSelector((state) => state.auth);
     const navigate = useNavigate();
-  const [userName, setUserName] = useState('');
+  const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
+
+  const [error2, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  useEffect(() => {
-    setLogin(false);
-  }, [userName, password]);
+  // useEffect(() => {
+  //   setLogin(false);
+  // }, [userName, password]);
 
-  const validandoDatos = (values) => {
-    const { username, password } = values; // Capturamos los valores del formulario
+  // const validandoDatos = () => {
+  
+  //   if (user) {
+  //     setError(false);
+  //     setUserName(userName);
+  //     if (user.username === 'admin') {
+  //       navigate('/Admin'); // Redirige a /Admin si el usuario es admin
+  //       setLogin(true);
+  //     } else {
+  //       navigate('/User'); // Redirige a /ConfirmarAsist si es otro usuario
+  //     }
+  //   } else {
+  //     setLogin(false);
+  //     setError(true);
+  //     setErrorMessage('Usuario o contraseña incorrecta');
+  //   }
+  // };
 
-    const user = users.find((u) => u.username === username && u.password === password);
-
-    if (user) {
-      setError(false);
-      setUserName(userName);
-      if (user.username === 'admin') {
-        navigate('/Admin'); // Redirige a /Admin si el usuario es admin
-        setLogin(true);
-      } else {
-        navigate('/User'); // Redirige a /ConfirmarAsist si es otro usuario
+  const handleLogin = async () => {
+     const response = await dispatch(loginUser({ username, password }));
+    
+    if (response.type === 'authSlice/loginUser/fulfilled') {
+      // Si el rol es admin, redirigir al admin
+      if (response.payload.rol === 'admin') {
+        navigate('/admin');  // Redirige a la ruta de Admin
+      } else if (response.payload.rol === 'servidor') {
+        navigate('/user');  // Redirige a la ruta de User
       }
     } else {
-      setLogin(false);
+      // Si hubo un error, mostrar mensaje
       setError(true);
       setErrorMessage('Usuario o contraseña incorrecta');
     }
@@ -52,7 +71,7 @@ export default function Login({setLogin}) {
             wrapperCol={{ span: 16 }}
             style={{ maxWidth: 600 }}
             initialValues={{ remember: true }}
-            onFinish={validandoDatos} // onFinish ya pasa los valores correctamente
+            onFinish={handleLogin} // onFinish ya pasa los valores correctamente
             autoComplete="off"
             className='p-14 sm:p-0' 
           >
@@ -79,7 +98,7 @@ export default function Login({setLogin}) {
               </Button>
             </Form.Item>
           </Form>
-        {error && <p style={{ color: 'red' }}>{errorMessage}</p>}
+        {error2 && <p style={{ color: 'red' }}>{errorMessage}</p>}
         </div>
     </div>
   );

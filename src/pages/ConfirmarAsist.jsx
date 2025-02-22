@@ -20,6 +20,9 @@ const ConfirmarAsist = ({bandera1}) => {
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
   const [acomuladorFir, setAcomuladorFir] = useState(0)
   const [acomuladorAsist, setAcomuladorAsist] = useState(0)
+  const [dniArray, setDniArray] = useState([]);
+  const [resultados, setResultados] = useState([]);
+  const [triggerFetch, setTriggerFetch] = useState(0);
 
   const handleAsistio = async (dni, newStatus, event_id) => {
     try {
@@ -106,12 +109,67 @@ const ConfirmarAsist = ({bandera1}) => {
         />
       ),
     },
+    {
+      title: "Ponderado Asistencia",
+      dataIndex: "attended",
+      key: "attended",
+      render: (attended, record) => {
+        // Acumular DNIs sin repetir
+        setDniArray((prev) => {
+          if (!prev.includes(record.dni)) {
+            return [...prev, record.dni];
+          }
+          return prev;
+        });
+    
+        // Filtrar los registros de este DNI y obtener los últimos 5
+        console.log({resultados});
+        
+        const filteredResults = resultados
+          .filter((item) => item.dni === record.dni)
+          .slice(-5); // Últimos 5 elementos
+          console.log({filteredResults});
+          
+    
+        return (
+          <div className="flex justify-center items-center gap-2 w-full">
+            {filteredResults.map((item, index) => (
+              <div
+                key={index}
+                className={`w-2 h-2 rounded-full ${
+                  item.promedio ? "bg-green-500" : "bg-red-500"
+                }`}
+              ></div>
+            ))}
+          </div>
+        );
+      },
+    }
+    
+    
   ];
+  useEffect(() => {
+    if (dniArray.length > 0) {
+      axios
+        .post(`${apiUrl}/consultarAttend`, { dniList: dniArray }, {
+          headers: { 'Content-Type': 'application/json' },
+        }) // Mandamos todos los DNIs juntos
+        .then((res) => {
+          setResultados(res.data); // Guardamos los resultados en un objeto
+        })
+        .catch((err) => console.error("Error en la consulta:", err));
+    }
+  }, [dniArray, triggerFetch]);
 
+  
+  const reconsultar = () => {
+    setTriggerFetch((prev) => prev + 1); // Incrementa el trigger para forzar la consulta
+  };
   const handleSubmit = async () => {
     try {
       const formData = form.getFieldsValue();
       const { fechaEvento } = formData;
+      reconsultar()
       if (fechaEvento) {
         const fechaFormateada = moment(fechaEvento.$d).format('YYYY/MM/DD');
         const requestData = { fecha: fechaFormateada };

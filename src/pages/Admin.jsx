@@ -10,6 +10,7 @@ import { MenuOutlined } from "@ant-design/icons"
 import Navbar from "../components/Navbar/Navbar"
 import { Drawer } from "antd"
 import GestionInterna from '../components/GestionInterna/GestionInterna';
+
 export default function Admin() {
   const [activo, setActivo] = useState('link');
   const [openMenu, setopenMenu] = useState(false)

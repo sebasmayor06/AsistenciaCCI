@@ -9,6 +9,17 @@ import { useNavigate } from 'react-router-dom';
 function Navbar({ setActivo,isInline = false, setopenMenu, bandera2}) {
   
   const navigate = useNavigate();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    // Eliminar el token de localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('rol');
+    navigate('/Login');
+  };
+
+
+
   return (
    
     <div>
@@ -43,7 +54,7 @@ function Navbar({ setActivo,isInline = false, setopenMenu, bandera2}) {
           { key: '4', label: 'Asistencia' },
           { key: '5', label: 'Tabla Cumpleaños' },
           { key: '6', label: 'Gestión interna' },
-          { key: '7', label: (<button className='lg:ml-36 lg:mt-3 bg-slate-500 flex justify-center items-center text-slate-100 w-32 h-10' onClick={() => {navigate('/Login')}}>Cerrar Sesión</button>) },
+          { key: '7', label: (<button className='lg:ml-36 lg:mt-3 bg-slate-500 flex justify-center items-center text-slate-100 w-32 h-10' onClick={handleLogout}>Cerrar Sesión</button>) },
         ]}
       /> : 
       <Menu
@@ -68,7 +79,7 @@ function Navbar({ setActivo,isInline = false, setopenMenu, bandera2}) {
           },
           { key: '1', label: (<span className=''>Asistencia</span>) },
           { key: '2', label: 'Miembros registrados' },
-          { key: '3', label: (<button className='lg:ml-[450px] lg:mt-3 bg-slate-500 flex justify-center items-center text-slate-100 w-32 h-10' onClick={() => {navigate('/Login')}}>Cerrar Sesión</button>)},
+          { key: '3', label: (<button className='lg:ml-[450px] lg:mt-3 bg-slate-500 flex justify-center items-center text-slate-100 w-32 h-10' onClick={handleLogout}>Cerrar Sesión</button>)},
         ]}
       />}
     </div>
